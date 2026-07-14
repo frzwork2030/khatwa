@@ -48,7 +48,7 @@ body{
   position:relative;
   display:flex;
   flex-direction:column;
-  padding-bottom:178px;
+  padding-bottom:86px;
 }
 .display{font-family:'Lalezar', sans-serif; letter-spacing:.5px;}
 
@@ -234,27 +234,13 @@ body{
 }
 .back-home-btn:active{transform:scale(.95);}
 
-/* ---------- Fixed dashboard actions ---------- */
-#dashboard-actions{
-  position:fixed; bottom:76px; left:50%; transform:translateX(-50%);
-  width:min(calc(100% - 28px), 432px); display:none; z-index:49;
-  padding:8px; background:rgba(29,27,58,.96); backdrop-filter:blur(14px);
-  border:1px solid var(--surface-light); border-radius:16px;
-  box-shadow:0 10px 28px rgba(0,0,0,.24);
-}
-#dashboard-actions.visible{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:8px;}
 .share-achievement-btn{
-  min-height:42px; padding:10px 12px; border:none; border-radius:12px;
+  min-height:44px; padding:10px 12px; border:none; border-radius:12px;
   background:linear-gradient(90deg, var(--teal), #69d8ce); color:var(--bg-deep);
   font-family:inherit; font-size:13px; font-weight:800; cursor:pointer; white-space:nowrap;
 }
 .share-achievement-btn:active{transform:scale(.98);}
-.reset-link{
-  display:block; margin:0; padding:9px 5px; border:none; background:transparent;
-  color:var(--text-dim); font-family:inherit; font-size:11.5px; cursor:pointer;
-  text-decoration:underline; white-space:nowrap;
-}
-.reset-link:hover{color:var(--coral);}
+.share-achievement-inline{width:100%; margin:0 0 4px;}
 
 /* ---------- Bottom nav ---------- */
 #bottom-nav{
@@ -268,6 +254,7 @@ body{
 }
 .nav-btn .ic{font-size:20px;}
 .nav-btn.active{color:var(--gold);}
+.nav-btn.reset-nav-btn{color:#F19A9A;}
 
 /* ---------- Toast / confetti ---------- */
 #toast{
@@ -359,6 +346,7 @@ body{
 
     <div class="section-title"><span class="bar"></span> أداء الالتزام</div>
     <div id="performanceChart"></div>
+    <button class="share-achievement-btn share-achievement-inline" id="shareAchievementBtn" type="button">مشاركة الإنجاز كصورة</button>
 
     <div class="section-title"><span class="bar"></span> عادات اليوم</div>
     <div id="todayList"></div>
@@ -391,16 +379,11 @@ body{
   </section>
 
 </div>
-
-<div id="dashboard-actions" aria-label="إجراءات لوحة التحكم">
-  <button class="share-achievement-btn" id="shareAchievementBtn" type="button">مشاركة الإنجاز كصورة</button>
-  <button class="reset-link" id="resetLink" type="button">إعادة تعيين البيانات</button>
-</div>
-
 <nav id="bottom-nav">
   <button class="nav-btn active" data-screen="dashboard"><span class="ic">🏠</span>الرئيسية</button>
   <button class="nav-btn" data-screen="challenges"><span class="ic">🔥</span>تحديات</button>
   <button class="nav-btn" data-screen="achievements"><span class="ic">🏆</span>إنجازات</button>
+  <button class="nav-btn reset-nav-btn" id="resetLink" type="button"><span class="ic">↻</span>إعادة</button>
 </nav>
 
 <script>
@@ -1137,12 +1120,11 @@ function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.screen===name));
-  document.getElementById('dashboard-actions').classList.toggle('visible', name==='dashboard');
   if(name==='dashboard') renderDashboard();
   if(name==='challenges') renderChallenges();
   if(name==='achievements') renderBadges();
 }
-document.querySelectorAll('.nav-btn').forEach(btn=>{
+document.querySelectorAll('.nav-btn[data-screen]').forEach(btn=>{
   btn.addEventListener('click', ()=> showScreen(btn.dataset.screen));
 });
 document.querySelectorAll('[data-home]').forEach(btn=>{
