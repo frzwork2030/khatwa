@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -45,23 +44,16 @@ body{
 #app{
   width:100%;
   max-width:460px;
-  height:100vh;
+  min-height:100vh;
   position:relative;
   display:flex;
   flex-direction:column;
-  overflow:hidden;
+  padding-bottom:86px;
 }
 .display{font-family:'Lalezar', sans-serif; letter-spacing:.5px;}
 
 /* ---------- Screens ---------- */
-.screen{
-  display:none;
-  flex:1;
-  overflow-y:auto;
-  padding:22px 20px 120px;
-  animation:fadeIn .35s ease;
-  -webkit-overflow-scrolling:touch;
-}
+.screen{display:none; padding:22px 20px 10px; animation:fadeIn .35s ease;}
 .screen.active{display:block;}
 @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
 
@@ -251,21 +243,9 @@ body{
 
 /* ---------- Bottom nav ---------- */
 #bottom-nav{
-  position:fixed;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:0;
-  width:100%;
-  max-width:460px;
-  height:82px;
-  padding-bottom:env(safe-area-inset-bottom);
-  background:rgba(29,27,58,.95);
-  backdrop-filter:blur(16px);
-  border-top:1px solid var(--surface-light);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  z-index:9999;
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:460px;
+  background:rgba(29,27,58,.92); backdrop-filter:blur(14px); border-top:1px solid var(--surface-light);
+  display:flex; justify-content:space-around; padding:10px 6px 14px; z-index:50;
 }
 .nav-btn{
   background:none; border:none; color:var(--text-dim); font-family:inherit; font-size:11px;
@@ -315,16 +295,29 @@ body{
 .add-habit-dash-form{display:none; margin-top:10px;}
 .add-habit-dash-form.show{display:flex; gap:8px;}
 
-#todayList,
-#challengeList,
-#badgeGrid{
-  padding-bottom:30px;
+/* ---------- Istighfar counter ---------- */
+.istighfar-card{
+  background:var(--surface); border:1.5px solid var(--surface-light); border-radius:20px;
+  padding:20px 16px; text-align:center; margin-bottom:6px;
 }
-
-.performance-card{
-  margin-bottom:20px;
+.istighfar-progress-wrap{margin-bottom:16px;}
+.istighfar-progress-bar{background:var(--bg-deep); border-radius:999px; height:8px; overflow:hidden;}
+.istighfar-progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--teal),var(--gold)); border-radius:999px; transition:width .25s ease;}
+.istighfar-progress-label{font-size:11.5px; color:var(--text-dim); margin-top:6px;}
+.istighfar-btn{
+  width:150px; height:150px; border-radius:50%; border:none; cursor:pointer; margin:0 auto;
+  background:radial-gradient(circle at 35% 30%, #f3d17e, var(--gold) 60%, #c99a35 100%);
+  box-shadow:0 10px 30px rgba(232,184,75,.35), inset 0 -6px 14px rgba(0,0,0,.15);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+  transition:transform .12s ease;
 }
-
+.istighfar-btn:active{transform:scale(.92);}
+.istighfar-btn-emoji{font-size:38px;}
+.istighfar-btn-text{font-size:13px; font-weight:700; color:var(--bg-deep);}
+.istighfar-stats{display:flex; justify-content:center; gap:34px; margin-top:16px;}
+.istighfar-stats div{display:flex; flex-direction:column; align-items:center;}
+.istighfar-stats b{font-family:'Lalezar'; font-size:26px; color:var(--gold); line-height:1;}
+.istighfar-stats span{font-size:11px; color:var(--text-dim); margin-top:4px;}
 </style>
 </head>
 <body>
@@ -379,6 +372,22 @@ body{
 
     <div class="share-btn-wrap">
       <button class="share-btn" id="shareBtn">📤 شارك إنجازك</button>
+    </div>
+
+    <div class="section-title"><span class="bar"></span> عداد الاستغفار</div>
+    <div class="istighfar-card">
+      <div class="istighfar-progress-wrap">
+        <div class="istighfar-progress-bar"><div class="istighfar-progress-fill" id="istighfarProgressFill"></div></div>
+        <div class="istighfar-progress-label" id="istighfarProgressLabel">0 / 100</div>
+      </div>
+      <button class="istighfar-btn" id="istighfarBtn">
+        <span class="istighfar-btn-emoji">🤲</span>
+        <span class="istighfar-btn-text">أستغفر الله</span>
+      </button>
+      <div class="istighfar-stats">
+        <div><b id="istighfarToday">0</b><span>اليوم</span></div>
+        <div><b id="istighfarTotal">0</b><span>الإجمالي</span></div>
+      </div>
     </div>
 
     <div class="section-title"><span class="bar"></span> أداء الالتزام</div>
@@ -527,7 +536,7 @@ const LEVELS = [
 ============================================================ */
 const STORAGE_KEY = 'khatwa_state_v1';
 function defaultState(){
-  return { name:'', selectedHabits:[], logs:{}, xp:0, joinedChallenge:null, challengeStart:null, badgesUnlocked:[], completedChallenges:0, customHabits:[] };
+  return { name:'', selectedHabits:[], logs:{}, xp:0, joinedChallenge:null, challengeStart:null, badgesUnlocked:[], completedChallenges:0, customHabits:[], istighfarLog:{} };
 }
 function getHabitById(id){
   return ALL_HABITS.find(h=>h.id===id) || (state.customHabits||[]).find(h=>h.id===id);
@@ -775,6 +784,42 @@ function shareAchievementImage(){
 }
 
 /* ============================================================
+   ISTIGHFAR COUNTER — عداد الاستغفار + اهتزاز عند كل 100
+============================================================ */
+function todayIstighfar(){
+  return (state.istighfarLog && state.istighfarLog[todayStr()]) || 0;
+}
+function totalIstighfar(){
+  return Object.values(state.istighfarLog || {}).reduce((a,b)=>a+b, 0);
+}
+function renderIstighfarCounter(){
+  const today = todayIstighfar();
+  const total = totalIstighfar();
+  document.getElementById('istighfarToday').textContent = today;
+  document.getElementById('istighfarTotal').textContent = total;
+  const progressInCycle = total % 100;
+  document.getElementById('istighfarProgressFill').style.width = progressInCycle + '%';
+  document.getElementById('istighfarProgressLabel').textContent = progressInCycle + ' / 100';
+}
+function incrementIstighfar(){
+  if(!state.istighfarLog) state.istighfarLog = {};
+  const t = todayStr();
+  state.istighfarLog[t] = (state.istighfarLog[t] || 0) + 1;
+  const total = totalIstighfar();
+  saveState();
+  renderIstighfarCounter();
+  // كل ما تكمل 100 (100، 200، 300...) — اهتزاز + إشعار إنجاز
+  // ملاحظة: الاهتزاز يشتغل على أندرويد (Chrome) لأن آبل تعطّل Vibration API في سفاري على الآيفون —
+  // على الآيفون بيوصله التنبيه والاحتفال بس بدون اهتزاز فعلي، وهذا قيد من نظام آبل مو من الكود.
+  if(total > 0 && total % 100 === 0){
+    if(navigator.vibrate) navigator.vibrate([250,100,250,100,400]);
+    toast('🎉 ما شاء الله! أكملت ' + total + ' استغفار');
+    confetti();
+  }
+}
+document.getElementById('istighfarBtn').addEventListener('click', incrementIstighfar);
+
+/* ============================================================
    RENDER: ONBOARDING
 ============================================================ */
 function renderCategoryGrid(){
@@ -948,6 +993,7 @@ function renderDashboard(){
   document.getElementById('xpBar').style.width = pct+'%';
   renderRosette();
   renderPerformanceChart();
+  renderIstighfarCounter();
 
   const list = document.getElementById('todayList');
   list.innerHTML = '';
