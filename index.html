@@ -332,6 +332,7 @@ body{
       <div class="greet">هلا، <b id="dashName">-</b> 👋</div>
       <div class="top-row-right">
         <div class="level-pill">⭐ <span id="levelLabel">مبتدئ</span></div>
+        <button class="icon-btn" id="editHabitsBtn" title="عدّل عاداتك">✏️</button>
         <button class="icon-btn" id="resetBtn" title="إعادة تعيين كل البيانات">⚙</button>
       </div>
     </div>
@@ -354,14 +355,6 @@ body{
 
     <div class="section-title"><span class="bar"></span> عادات اليوم</div>
     <div id="todayList"></div>
-
-    <div class="add-habit-card-dash" id="dashAddCard">
-      <div id="dashAddLabel">➕ أضف عادة جديدة</div>
-      <div class="add-habit-dash-form" id="dashAddForm">
-        <input class="add-habit-input" id="dashHabitInput" placeholder="اكتب اسم العادة">
-        <button class="add-habit-btn" id="dashHabitAddBtn">إضافة</button>
-      </div>
-    </div>
   </section>
 
   <!-- ============ CHALLENGES ============ -->
@@ -1077,24 +1070,17 @@ document.querySelectorAll('[data-home]').forEach(btn=>{
 
 document.getElementById('shareBtn').addEventListener('click', shareAchievementImage);
 
-document.getElementById('dashAddCard').addEventListener('click', (e)=>{
-  if(e.target.closest('.add-habit-dash-form')) return;
-  document.getElementById('dashAddForm').classList.toggle('show');
-});
-document.getElementById('dashHabitAddBtn').addEventListener('click', (e)=>{
-  e.stopPropagation();
-  const input = document.getElementById('dashHabitInput');
-  const name = input.value.trim();
-  if(!name) return;
-  addCustomHabit(name);
-  input.value='';
-  toast('✨ ضفنا عادة "'+name+'" لقائمتك');
-  renderDashboard();
-});
-document.getElementById('dashHabitInput').addEventListener('keydown', e=>{
-  if(e.key==='Enter') document.getElementById('dashHabitAddBtn').click();
-});
-document.getElementById('dashHabitInput').addEventListener('click', e=> e.stopPropagation());
+function openEditHabits(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-onboarding').classList.add('active');
+  document.getElementById('ob-step-1').style.display='none';
+  document.getElementById('ob-step-2').style.display='block';
+  document.getElementById('bottom-nav').style.display='none';
+  renderCategoryGrid();
+  updateSelCount();
+  document.getElementById('ob2-next').textContent = 'حفظ التغييرات ✓';
+}
+document.getElementById('editHabitsBtn').addEventListener('click', openEditHabits);
 
 document.getElementById('resetBtn').addEventListener('click', ()=>{
   if(confirm('متأكد تبي تمسح كل بياناتك وتبدأ من الصفر؟')){
