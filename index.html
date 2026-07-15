@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -44,16 +45,23 @@ body{
 #app{
   width:100%;
   max-width:460px;
-  min-height:100vh;
+  height:100vh;
   position:relative;
   display:flex;
   flex-direction:column;
-  padding-bottom:86px;
+  overflow:hidden;
 }
 .display{font-family:'Lalezar', sans-serif; letter-spacing:.5px;}
 
 /* ---------- Screens ---------- */
-.screen{display:none; padding:22px 20px 10px; animation:fadeIn .35s ease;}
+.screen{
+  display:none;
+  flex:1;
+  overflow-y:auto;
+  padding:22px 20px 120px;
+  animation:fadeIn .35s ease;
+  -webkit-overflow-scrolling:touch;
+}
 .screen.active{display:block;}
 @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
 
@@ -243,9 +251,21 @@ body{
 
 /* ---------- Bottom nav ---------- */
 #bottom-nav{
-  position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:460px;
-  background:rgba(29,27,58,.92); backdrop-filter:blur(14px); border-top:1px solid var(--surface-light);
-  display:flex; justify-content:space-around; padding:10px 6px 14px; z-index:50;
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:0;
+  width:100%;
+  max-width:460px;
+  height:82px;
+  padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(29,27,58,.95);
+  backdrop-filter:blur(16px);
+  border-top:1px solid var(--surface-light);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:9999;
 }
 .nav-btn{
   background:none; border:none; color:var(--text-dim); font-family:inherit; font-size:11px;
@@ -294,6 +314,17 @@ body{
 }
 .add-habit-dash-form{display:none; margin-top:10px;}
 .add-habit-dash-form.show{display:flex; gap:8px;}
+
+#todayList,
+#challengeList,
+#badgeGrid{
+  padding-bottom:30px;
+}
+
+.performance-card{
+  margin-bottom:20px;
+}
+
 </style>
 </head>
 <body>
