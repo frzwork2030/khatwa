@@ -125,13 +125,20 @@ body{
 .selected-count{font-size:12.5px; color:var(--text-dim); margin-top:10px; text-align:center;}
 
 /* ---------- Dashboard ---------- */
-.top-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.top-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:8px;}
 .greet{font-size:13px; color:var(--text-dim);}
 .greet b{color:var(--text);}
+.top-row-right{display:flex; align-items:center; gap:8px;}
 .level-pill{
   background:var(--surface); border:1px solid var(--surface-light); border-radius:999px;
-  padding:6px 12px; font-size:12px; display:flex; align-items:center; gap:6px;
+  padding:6px 12px; font-size:12px; display:flex; align-items:center; gap:6px; white-space:nowrap;
 }
+.icon-btn{
+  background:var(--surface); border:1px solid var(--surface-light); color:var(--text-dim);
+  width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:15px; cursor:pointer; flex-shrink:0;
+}
+.icon-btn:active{border-color:var(--coral); color:var(--coral);}
 .xp-bar-wrap{background:var(--surface); border-radius:999px; height:8px; margin:10px 0 22px; overflow:hidden;}
 .xp-bar{height:100%; background:linear-gradient(90deg, var(--teal), var(--gold)); border-radius:999px; transition:width .5s ease;}
 
@@ -143,8 +150,18 @@ body{
 .rosette-num{font-family:'Lalezar'; font-size:44px; color:var(--gold); line-height:1;}
 .rosette-cap{font-size:11px; color:var(--text-dim); margin-top:2px;}
 
+.share-btn-wrap{display:flex; justify-content:center; margin-bottom:8px;}
+.share-btn{
+  display:flex; align-items:center; gap:7px; padding:10px 18px; border-radius:999px; border:none;
+  background:linear-gradient(90deg, var(--teal), var(--gold)); color:var(--bg-deep); font-family:inherit;
+  font-weight:700; font-size:13px; cursor:pointer; box-shadow:0 6px 18px rgba(46,196,182,.2);
+}
+
 .section-title{font-size:15px; font-weight:700; margin:22px 0 12px; display:flex; align-items:center; gap:8px;}
 .section-title .bar{width:4px; height:16px; background:var(--teal); border-radius:2px;}
+
+.screen-top-nav{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+.screen-top-title{font-size:18px; font-weight:700;}
 
 .today-card{
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:16px;
@@ -224,24 +241,6 @@ body{
 .badge-name{font-size:11.5px; font-weight:700;}
 .badge-desc{font-size:10px; color:var(--text-dim); margin-top:3px; line-height:1.4;}
 
-/* ---------- Screen headers ---------- */
-.screen-heading{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;}
-.screen-heading .section-title{margin:0;}
-.back-home-btn{
-  width:36px; height:36px; border:none; border-radius:12px; flex-shrink:0;
-  background:var(--surface); color:var(--text); border:1px solid var(--surface-light);
-  font-family:inherit; font-size:22px; line-height:1; cursor:pointer;
-}
-.back-home-btn:active{transform:scale(.95);}
-
-.share-achievement-btn{
-  min-height:44px; padding:10px 12px; border:none; border-radius:12px;
-  background:linear-gradient(90deg, var(--teal), #69d8ce); color:var(--bg-deep);
-  font-family:inherit; font-size:13px; font-weight:800; cursor:pointer; white-space:nowrap;
-}
-.share-achievement-btn:active{transform:scale(.98);}
-.share-achievement-inline{width:100%; margin:0 0 4px;}
-
 /* ---------- Bottom nav ---------- */
 #bottom-nav{
   position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:460px;
@@ -254,7 +253,6 @@ body{
 }
 .nav-btn .ic{font-size:20px;}
 .nav-btn.active{color:var(--gold);}
-.nav-btn.reset-nav-btn{color:#F19A9A;}
 
 /* ---------- Toast / confetti ---------- */
 #toast{
@@ -291,7 +289,7 @@ body{
 }
 .add-habit-card-dash{
   border:1.5px dashed var(--teal); background:rgba(46,196,182,.06); border-radius:16px;
-  padding:13px 14px; margin-bottom:10px; cursor:pointer; text-align:center; color:var(--teal);
+  padding:13px 14px; margin-bottom:6px; cursor:pointer; text-align:center; color:var(--teal);
   font-weight:700; font-size:13.5px;
 }
 .add-habit-dash-form{display:none; margin-top:10px;}
@@ -332,7 +330,10 @@ body{
   <section id="screen-dashboard" class="screen">
     <div class="top-row">
       <div class="greet">هلا، <b id="dashName">-</b> 👋</div>
-      <div class="level-pill">⭐ <span id="levelLabel">مبتدئ</span></div>
+      <div class="top-row-right">
+        <div class="level-pill">⭐ <span id="levelLabel">مبتدئ</span></div>
+        <button class="icon-btn" id="resetBtn" title="إعادة تعيين كل البيانات">⚙</button>
+      </div>
     </div>
     <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar" style="width:0%"></div></div>
 
@@ -344,9 +345,12 @@ body{
       </div>
     </div>
 
+    <div class="share-btn-wrap">
+      <button class="share-btn" id="shareBtn">📤 شارك إنجازك</button>
+    </div>
+
     <div class="section-title"><span class="bar"></span> أداء الالتزام</div>
     <div id="performanceChart"></div>
-    <button class="share-achievement-btn share-achievement-inline" id="shareAchievementBtn" type="button">مشاركة الإنجاز كصورة</button>
 
     <div class="section-title"><span class="bar"></span> عادات اليوم</div>
     <div id="todayList"></div>
@@ -362,28 +366,28 @@ body{
 
   <!-- ============ CHALLENGES ============ -->
   <section id="screen-challenges" class="screen">
-    <div class="screen-heading">
-      <div class="section-title"><span class="bar"></span> تحديات 30 يوم</div>
-      <button class="back-home-btn" type="button" data-home aria-label="العودة للرئيسية" title="العودة للرئيسية">←</button>
+    <div class="screen-top-nav">
+      <button class="icon-btn" data-home="1" title="الرجوع للرئيسية">→</button>
+      <div class="screen-top-title">تحديات 30 يوم</div>
     </div>
     <div id="challengeList"></div>
   </section>
 
   <!-- ============ ACHIEVEMENTS ============ -->
   <section id="screen-achievements" class="screen">
-    <div class="screen-heading">
-      <div class="section-title"><span class="bar"></span> إنجازاتك</div>
-      <button class="back-home-btn" type="button" data-home aria-label="العودة للرئيسية" title="العودة للرئيسية">←</button>
+    <div class="screen-top-nav">
+      <button class="icon-btn" data-home="1" title="الرجوع للرئيسية">→</button>
+      <div class="screen-top-title">إنجازاتك</div>
     </div>
     <div class="badge-grid" id="badgeGrid"></div>
   </section>
 
 </div>
+
 <nav id="bottom-nav">
   <button class="nav-btn active" data-screen="dashboard"><span class="ic">🏠</span>الرئيسية</button>
   <button class="nav-btn" data-screen="challenges"><span class="ic">🔥</span>تحديات</button>
   <button class="nav-btn" data-screen="achievements"><span class="ic">🏆</span>إنجازات</button>
-  <button class="nav-btn reset-nav-btn" id="resetLink" type="button"><span class="ic">↻</span>إعادة</button>
 </nav>
 
 <script>
@@ -396,16 +400,11 @@ body{
    مثال: presetName: "سارة"
 ============================================================ */
 const CONFIG = {
-  فيصل: ""   // اكتب اسم الزبون هنا بين علامتي التنصيص قبل ما ترسل له الملف
+  presetName: ""   // اكتب اسم الزبون هنا بين علامتي التنصيص قبل ما ترسل له الملف
 };
 
 /* ============================================================
    PWA SETUP — أيقونة + Manifest + Service Worker
-   كلها مدمجة جوا الملف نفسه (ملف واحد فقط)، بس تشتغل بكامل
-   مفعولها فقط لما الملف يكون مستضاف على رابط https (مثل GitHub Pages
-   أو منصة سلة). لو المستخدم فتح الملف مباشرة من الجوال (بدون استضافة)،
-   الأيقونة والاسم على الشاشة الرئيسية بيشتغلوا، لكن وضع "standalone"
-   الكامل (بدون شريط المتصفح) يحتاج استضافة حقيقية.
 ============================================================ */
 const APP_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1">
@@ -437,8 +436,6 @@ function setupPWA(){
   const manifestBlob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
   document.getElementById('manifestLink').setAttribute('href', URL.createObjectURL(manifestBlob));
 
-  // Service Worker بسيط جدًا (يخزن الملف نفسه للعمل بدون إنترنت)
-  // ملاحظة: يحتاج استضافة https (لا يشتغل من file:// مباشرة — قيد أماني من المتصفح)
   if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname==='localhost')){
     const swCode = `
       self.addEventListener('install', e => self.skipWaiting());
@@ -535,11 +532,10 @@ function dayComplete(dateStr){
 function computeStreak(){
   let streak = 0;
   let i = 0;
-  // allow today to be "in progress" without breaking streak count for yesterday
   while(true){
     const d = dateMinus(i);
     if(dayComplete(d)){ streak++; i++; }
-    else if(i===0){ i++; continue; } // today not finished yet, check yesterday
+    else if(i===0){ i++; continue; }
     else break;
   }
   return streak;
@@ -620,7 +616,6 @@ function renderRosette(){
   const streak = computeStreak();
   const cx=150, cy=150, N=30;
   let html = '';
-  // outer faint guide ring
   html += `<circle cx="${cx}" cy="${cy}" r="132" fill="none" stroke="#2A2854" stroke-width="1" opacity="0.5"/>`;
   for(let i=0;i<N;i++){
     const angle = -90 + i*(360/N);
@@ -660,6 +655,99 @@ function renderRosette(){
   </defs>`;
   svg.innerHTML = defs + html;
   document.getElementById('streakNum').textContent = streak;
+}
+
+/* ============================================================
+   SHARE ACHIEVEMENT AS IMAGE
+============================================================ */
+function buildShareCanvas(){
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080; canvas.height = 1350;
+  const ctx = canvas.getContext('2d');
+
+  const grad = ctx.createLinearGradient(0,0,0,canvas.height);
+  grad.addColorStop(0, '#241F52');
+  grad.addColorStop(0.5, '#12102A');
+  grad.addColorStop(1, '#0B0A1E');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  const streak = computeStreak();
+  const lvl = currentLevel();
+  const badgesCount = state.badgesUnlocked.length;
+  const cx = canvas.width/2, cy = 400, ringR = 190;
+
+  const colors = ['#F3D17E','#E8B84B','#2EC4B6','#FF6B6B'];
+  const segs = 60;
+  const filledSegs = Math.round((Math.min(streak,30)/30) * segs);
+  for(let i=0;i<segs;i++){
+    const a0 = (i/segs)*Math.PI*2 - Math.PI/2;
+    const a1 = ((i+1)/segs)*Math.PI*2 - Math.PI/2;
+    ctx.beginPath();
+    ctx.strokeStyle = i < filledSegs ? colors[i % colors.length] : 'rgba(169,166,201,0.15)';
+    ctx.lineWidth = 26;
+    ctx.arc(cx, cy, ringR, a0, a1);
+    ctx.stroke();
+  }
+  ctx.beginPath();
+  ctx.fillStyle = '#0B0A1E';
+  ctx.arc(cx, cy, ringR-30, 0, Math.PI*2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.strokeStyle = '#E8B84B';
+  ctx.lineWidth = 3;
+  ctx.arc(cx, cy, ringR-30, 0, Math.PI*2);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#E8B84B';
+  ctx.font = '700 130px sans-serif';
+  ctx.fillText(String(streak), cx, cy - 10);
+  ctx.font = '400 32px sans-serif';
+  ctx.fillStyle = '#A9A6C9';
+  ctx.fillText('يوم متتالي', cx, cy + 70);
+
+  ctx.font = '700 58px sans-serif';
+  ctx.fillStyle = '#F5F3FF';
+  ctx.fillText(state.name || 'صديقنا', cx, 720);
+
+  ctx.font = '400 34px sans-serif';
+  ctx.fillStyle = '#2EC4B6';
+  ctx.fillText('⭐ ' + lvl.name, cx, 780);
+
+  ctx.font = '400 30px sans-serif';
+  ctx.fillStyle = '#A9A6C9';
+  ctx.fillText(badgesCount + ' وسام مُنجز  ·  ' + state.xp + ' نقطة خبرة', cx, 830);
+
+  ctx.font = '700 50px sans-serif';
+  ctx.fillStyle = '#E8B84B';
+  ctx.fillText('خطوة', cx, canvas.height - 130);
+  ctx.font = '400 27px sans-serif';
+  ctx.fillStyle = '#A9A6C9';
+  ctx.fillText('رفيقك اليومي في بناء عاداتك', cx, canvas.height - 80);
+
+  return canvas;
+}
+function shareAchievementImage(){
+  const canvas = buildShareCanvas();
+  canvas.toBlob(async (blob)=>{
+    if(!blob) return;
+    const fileName = 'khatwa-انجازي.png';
+    try{
+      const file = new File([blob], fileName, {type:'image/png'});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title:'إنجازي في خطوة', text: computeStreak()+' يوم متتالي من الالتزام 🔥'});
+        return;
+      }
+    }catch(e){ /* المستخدم ألغى المشاركة أو المتصفح ما يدعمها — نكمل للتحميل */ }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = fileName;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 2000);
+    toast('📥 تم حفظ صورة الإنجاز عندك');
+  }, 'image/png');
 }
 
 /* ============================================================
@@ -704,7 +792,6 @@ function renderCategoryGrid(){
     });
   });
 
-  // ---- بطاقة "أضف عادتك الخاصة" ----
   const addCard = document.createElement('div');
   addCard.className = 'cat-card add-cat-card';
   addCard.innerHTML = `
@@ -971,149 +1058,6 @@ function renderBadges(){
 }
 
 /* ============================================================
-   SHARE ACHIEVEMENT IMAGE
-============================================================ */
-function roundedRect(ctx, x, y, width, height, radius){
-  const r = Math.min(radius, width / 2, height / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + width, y, x + width, y + height, r);
-  ctx.arcTo(x + width, y + height, x, y + height, r);
-  ctx.arcTo(x, y + height, x, y, r);
-  ctx.arcTo(x, y, x + width, y, r);
-  ctx.closePath();
-}
-
-function createAchievementImage(){
-  const canvas = document.createElement('canvas');
-  const width = 1080;
-  const height = 1350;
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  const days = weeklyPerformance(7);
-  const average = Math.round(days.reduce((sum, day)=>sum + day.percent, 0) / days.length);
-  const today = days[days.length - 1];
-  const streak = computeStreak();
-  const name = String(state.name || 'صديقنا').slice(0, 28);
-
-  ctx.fillStyle = '#12102A';
-  ctx.fillRect(0, 0, width, height);
-  ctx.fillStyle = '#241F52';
-  ctx.beginPath();
-  ctx.arc(960, 80, 290, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#1D1B3A';
-  roundedRect(ctx, 70, 70, 940, 1210, 48);
-  ctx.fill();
-  ctx.strokeStyle = '#3A376C';
-  ctx.lineWidth = 3;
-  roundedRect(ctx, 70, 70, 940, 1210, 48);
-  ctx.stroke();
-
-  ctx.direction = 'rtl';
-  ctx.textAlign = 'right';
-  ctx.fillStyle = '#E8B84B';
-  ctx.font = '700 58px Arial, sans-serif';
-  ctx.fillText('خطوة', 920, 165);
-  ctx.fillStyle = '#A9A6C9';
-  ctx.font = '400 30px Arial, sans-serif';
-  ctx.fillText('إنجاز اليوم', 920, 215);
-
-  ctx.fillStyle = '#0B0A1E';
-  roundedRect(ctx, 120, 275, 840, 365, 34);
-  ctx.fill();
-  ctx.fillStyle = '#F5F3FF';
-  ctx.font = '700 42px Arial, sans-serif';
-  ctx.fillText('أحسنت يا ' + name, 900, 360);
-  ctx.fillStyle = '#A9A6C9';
-  ctx.font = '400 28px Arial, sans-serif';
-  ctx.fillText('أكملت اليوم', 900, 415);
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#2EC4B6';
-  ctx.font = '700 168px Arial, sans-serif';
-  ctx.fillText(today.percent + '%', 540, 545);
-  ctx.fillStyle = '#F5F3FF';
-  ctx.font = '600 34px Arial, sans-serif';
-  ctx.fillText(today.done + ' من ' + today.total + ' عادة', 540, 600);
-
-  ctx.direction = 'rtl';
-  ctx.textAlign = 'right';
-  ctx.fillStyle = '#F5F3FF';
-  ctx.font = '700 34px Arial, sans-serif';
-  ctx.fillText('أداء آخر 7 أيام', 900, 725);
-  const chartX = 170;
-  const chartY = 1015;
-  const chartHeight = 210;
-  const barWidth = 70;
-  const gap = 45;
-  days.forEach((day, index)=>{
-    const x = chartX + index * (barWidth + gap);
-    ctx.fillStyle = '#0B0A1E';
-    roundedRect(ctx, x, chartY - chartHeight, barWidth, chartHeight, 28);
-    ctx.fill();
-    const fillHeight = Math.max(day.done > 0 ? 12 : 0, chartHeight * day.percent / 100);
-    if(fillHeight > 0){
-      ctx.fillStyle = day.complete ? '#E8B84B' : '#2EC4B6';
-      roundedRect(ctx, x, chartY - fillHeight, barWidth, fillHeight, 28);
-      ctx.fill();
-    }
-    ctx.direction = 'ltr';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = day.isToday ? '#E8B84B' : '#A9A6C9';
-    ctx.font = '600 23px Arial, sans-serif';
-    ctx.fillText(day.percent + '%', x + barWidth / 2, chartY + 42);
-  });
-
-  ctx.direction = 'rtl';
-  ctx.textAlign = 'right';
-  ctx.fillStyle = '#2A2854';
-  roundedRect(ctx, 120, 1110, 840, 110, 26);
-  ctx.fill();
-  ctx.fillStyle = '#F5F3FF';
-  ctx.font = '700 30px Arial, sans-serif';
-  ctx.fillText('سلسلتك الحالية: ' + streak + ' يوم', 900, 1178);
-  ctx.fillStyle = '#A9A6C9';
-  ctx.font = '400 25px Arial, sans-serif';
-  ctx.fillText('متوسط الالتزام هذا الأسبوع: ' + average + '%', 900, 1260);
-
-  return canvas;
-}
-
-async function shareAchievementAsImage(){
-  const canvas = createAchievementImage();
-  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-  if(!blob){
-    toast('ما قدرنا ننشئ صورة الإنجاز، جرّب مرة ثانية.');
-    return;
-  }
-
-  const file = new File([blob], 'khatwa-achievement.png', {type:'image/png'});
-  const shareData = {
-    title: 'إنجازي في خطوة',
-    text: 'أتابع عاداتي اليومية مع خطوة.',
-    files: [file]
-  };
-
-  if(navigator.canShare && navigator.canShare(shareData)){
-    try{
-      await navigator.share(shareData);
-    } catch(error){
-      if(error && error.name !== 'AbortError') toast('تعذرت المشاركة الآن، جرّب مرة ثانية.');
-    }
-    return;
-  }
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'khatwa-achievement.png';
-  link.click();
-  URL.revokeObjectURL(url);
-  toast('تم حفظ صورة إنجازك في التنزيلات.');
-}
-
-/* ============================================================
    NAVIGATION
 ============================================================ */
 function showScreen(name){
@@ -1124,15 +1068,15 @@ function showScreen(name){
   if(name==='challenges') renderChallenges();
   if(name==='achievements') renderBadges();
 }
-document.querySelectorAll('.nav-btn[data-screen]').forEach(btn=>{
+document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click', ()=> showScreen(btn.dataset.screen));
 });
 document.querySelectorAll('[data-home]').forEach(btn=>{
   btn.addEventListener('click', ()=> showScreen('dashboard'));
 });
-document.getElementById('shareAchievementBtn').addEventListener('click', shareAchievementAsImage);
 
-// ---- إعداد بطاقة "أضف عادة جديدة" بالداشبورد (مرة وحدة بس، مو مع كل تحديث) ----
+document.getElementById('shareBtn').addEventListener('click', shareAchievementImage);
+
 document.getElementById('dashAddCard').addEventListener('click', (e)=>{
   if(e.target.closest('.add-habit-dash-form')) return;
   document.getElementById('dashAddForm').classList.toggle('show');
@@ -1152,6 +1096,13 @@ document.getElementById('dashHabitInput').addEventListener('keydown', e=>{
 });
 document.getElementById('dashHabitInput').addEventListener('click', e=> e.stopPropagation());
 
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(confirm('متأكد تبي تمسح كل بياناتك وتبدأ من الصفر؟')){
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+});
+
 /* ============================================================
    ONBOARDING FLOW
 ============================================================ */
@@ -1170,18 +1121,10 @@ document.getElementById('ob2-next').addEventListener('click', ()=>{
   showScreen('dashboard');
 });
 
-document.getElementById('resetLink').addEventListener('click', ()=>{
-  if(confirm('متأكد تبي تمسح كل بياناتك وتبدأ من الصفر؟')){
-    localStorage.removeItem(STORAGE_KEY);
-    location.reload();
-  }
-});
-
 /* ============================================================
    BOOT
 ============================================================ */
 function boot(){
-  // لو المطوّر (فيصل) حط اسم جاهز في CONFIG قبل ما يرسل الملف للزبون
   if(CONFIG.presetName && !state.name){
     state.name = CONFIG.presetName;
     saveState();
@@ -1191,7 +1134,6 @@ function boot(){
     document.getElementById('bottom-nav').style.display='flex';
     showScreen('dashboard');
   } else if(state.name){
-    // الاسم جاهز، بس لسه ما اختار عادات — نروح مباشرة لخطوة اختيار العادات
     document.getElementById('nameInput').value = state.name;
     document.getElementById('ob-step-1').style.display='none';
     document.getElementById('ob-step-2').style.display='block';
