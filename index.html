@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="ar" dir="rtl">
@@ -29,6 +30,8 @@
 <link id="appleIconLink" rel="apple-touch-icon">
 
 <link id="faviconLink" rel="icon" type="image/svg+xml">
+
+<link rel="stylesheet" href="style.css">
 
 <style>
 
@@ -533,6 +536,61 @@ body{
 
  
 
+/* ---------- More screen ---------- */
+
+.screen-top-nav{
+  display:flex; align-items:center; gap:10px; margin-bottom:18px;
+}
+
+.icon-btn{
+  width:42px; height:42px; border:none; border-radius:50%;
+  background:rgba(255,255,255,.08); color:var(--text); font-size:18px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+
+.screen-top-title{
+  font-size:20px; font-weight:800; color:var(--text);
+}
+
+.more-logo-wrap{text-align:center; margin-bottom:26px;}
+.logo-mark.small{width:56px; height:56px; margin:0 auto 10px;}
+.logo-mark.small::after{width:40px; height:40px;}
+.more-app-name{font-family:'Lalezar'; font-size:26px; color:var(--gold);}
+.more-app-tagline{font-size:12.5px; color:var(--text-dim); margin-top:4px;}
+.more-version{font-size:11px; color:var(--text-dim); margin-top:8px; background:var(--surface); display:inline-block; padding:4px 12px; border-radius:999px; border:1px solid var(--surface-light);}
+
+.more-card{
+  background:var(--surface); border:1.5px solid var(--surface-light); border-radius:18px;
+  padding:6px; margin-bottom:6px;
+}
+.more-contact-row{
+  display:flex; align-items:center; gap:12px; padding:13px 12px; text-decoration:none; color:var(--text);
+  border-radius:14px; transition:.15s;
+}
+.more-contact-row:active{background:var(--bg-deep);}
+.more-contact-row + .more-contact-row{border-top:1px dashed var(--surface-light);}
+.more-contact-icon{font-size:22px;}
+.more-contact-text{flex:1;}
+.more-contact-label{font-size:11.5px; color:var(--text-dim);}
+.more-contact-value{font-size:14px; font-weight:700; margin-top:2px;}
+.more-contact-arrow{color:var(--text-dim); font-size:14px;}
+
+.more-about-text{padding:14px 14px 6px; font-size:13.5px; color:var(--text-dim); line-height:1.9;}
+.more-developer{padding:0 14px 14px; font-size:12px; color:var(--teal); font-weight:700;}
+
+.faq-item{
+  background:var(--surface); border:1.5px solid var(--surface-light); border-radius:14px;
+  margin-bottom:8px; overflow:hidden;
+}
+.faq-question{
+  display:flex; justify-content:space-between; align-items:center; padding:14px 14px;
+  font-size:13.5px; font-weight:700; cursor:pointer;
+}
+.faq-question .faq-caret{color:var(--teal); transition:transform .2s ease; font-size:12px;}
+.faq-item.open .faq-caret{transform:rotate(180deg);}
+.faq-answer{display:none; padding:0 14px 14px; font-size:13px; color:var(--text-dim); line-height:1.8;}
+.faq-item.open .faq-answer{display:block;}
+
 /* ---------- Bottom nav ---------- */
 
 #bottom-nav{
@@ -845,6 +903,51 @@ body{
 
   </section>
 
+  <!-- ============ MORE ============ -->
+
+  <section id="screen-more" class="screen">
+    <div class="screen-top-nav">
+      <button class="icon-btn" data-home="1" title="الرجوع للرئيسية">→</button>
+      <div class="screen-top-title">المزيد</div>
+    </div>
+
+    <div class="more-logo-wrap">
+      <div class="logo-mark small"></div>
+      <div class="more-app-name">خطوة</div>
+      <div class="more-app-tagline">كل عادة صغيرة... خطوة توصلك أبعد</div>
+      <div class="more-version">الإصدار 1.0.0</div>
+    </div>
+
+    <div class="section-title"><span class="bar"></span> تواصل معنا</div>
+    <div class="more-card">
+      <a class="more-contact-row" href="https://instagram.com/NKMMLK_STORE" target="_blank" rel="noopener">
+        <span class="more-contact-icon">📷</span>
+        <div class="more-contact-text">
+          <div class="more-contact-label">إنستقرام</div>
+          <div class="more-contact-value">NKMMLK_STORE@</div>
+        </div>
+        <span class="more-contact-arrow">←</span>
+      </a>
+      <a class="more-contact-row" href="mailto:Faisal-PR2030@outlook.com">
+        <span class="more-contact-icon">✉️</span>
+        <div class="more-contact-text">
+          <div class="more-contact-label">البريد الإلكتروني</div>
+          <div class="more-contact-value">Faisal-PR2030@outlook.com</div>
+        </div>
+        <span class="more-contact-arrow">←</span>
+      </a>
+    </div>
+
+    <div class="section-title"><span class="bar"></span> عن خطوة</div>
+    <div class="more-card">
+      <p class="more-about-text">"خطوة" تطبيق سعودي بسيط يساعدك تبني عاداتك اليومية بطريقة ممتعة ومحفزة — من دراسة وصلاة ورياضة وتطوير ذاتي — بدون تعقيد. كل بياناتك تُحفظ على جهازك فقط، وما نطلب منك تسجيل حساب أو مشاركة معلوماتك مع أي جهة.</p>
+      <div class="more-developer">تطوير: FRZ</div>
+    </div>
+
+    <div class="section-title"><span class="bar"></span> أسئلة شائعة</div>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
  
 
 </div>
@@ -859,11 +962,15 @@ body{
 
   <button class="nav-btn" data-screen="achievements"><span class="ic">🏆</span>إنجازات</button>
 
+  <button class="nav-btn" data-screen="more"><span class="ic">⋯</span>المزيد</button>
+
   <button class="nav-btn reset-nav-btn" id="resetLink" type="button"><span class="ic">↻</span>إعادة</button>
 
 </nav>
 
  
+
+<script src="script.js"></script>
 
 <script>
 
@@ -2411,6 +2518,8 @@ function showScreen(name){
 
   if(name==='achievements') renderBadges();
 
+  if(name==='more') renderFAQList();
+
 }
 
 document.querySelectorAll('.nav-btn[data-screen]').forEach(btn=>{
@@ -2541,6 +2650,41 @@ document.getElementById('resetLink').addEventListener('click', ()=>{
 
 /* ============================================================
 
+   MORE SCREEN FAQ
+
+============================================================ */
+
+const FAQS = [
+  { q:'كيف أضيف أو أغيّر عاداتي اليومية؟', a:'اضغط أيقونة ✏️ بأعلى الشاشة الرئيسية، عدّل اختيارك، وثم اضغط "حفظ التغييرات".' },
+  { q:'وين تُحفظ بياناتي؟ هل هي آمنة؟', a:'كل بياناتك تُحفظ محليًا على جهازك فقط (داخل المتصفح)، وما تُرسل لأي سيرفر أو جهة خارجية. لو مسحت بيانات المتصفح أو غيّرت جهازك، البيانات تروح، فخذ بالك.' },
+  { q:'هل يشتغل التطبيق بدون إنترنت؟', a:'نعم، بعد أول فتح للتطبيق يقدر يشتغل بدون نت في أغلب الأحيان.' },
+  { q:'ليش ما يهتز جوالي عند إكمال 100 استغفار؟', a:'الاهتزاز يشتغل على أجهزة أندرويد. آبل تمنع تفعيل هذي الميزة من متصفح سفاري على الآيفون، فعلى الآيفون بتوصلك بس رسالة التنبيه والاحتفال البصري بدون اهتزاز فعلي.' },
+  { q:'كيف أتواصل للدعم الفني أو الاستفسارات؟', a:'تواصل معنا مباشرة عبر الإنستقرام أو البريد الإلكتروني الموضحين بالأعلى، ويسعدنا نساعدك.' },
+];
+
+function renderFAQList(){
+  const wrap = document.getElementById('faqList');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  FAQS.forEach((item, idx)=>{
+    const el = document.createElement('div');
+    el.className = 'faq-item';
+    el.innerHTML = `
+      <div class="faq-question">
+        <span>${item.q}</span>
+        <span class="faq-caret">▾</span>
+      </div>
+      <div class="faq-answer">${item.a}</div>
+    `;
+    el.querySelector('.faq-question').addEventListener('click', ()=>{
+      el.classList.toggle('open');
+    });
+    wrap.appendChild(el);
+  });
+}
+
+/* ============================================================
+
    BOOT
 
 ============================================================ */
@@ -2586,11 +2730,49 @@ function boot(){
   }
 
 }
-
+renderFAQList();
 boot();
 
 </script>
 
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
 </body>
 
 </html>
