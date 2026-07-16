@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="ar" dir="rtl">
@@ -26,12 +27,9 @@
 
 <link id="manifestLink" rel="manifest">
 
-<link id="appleIconLink" rel="apple-touch-icon" href="icons/icon-192.png">
+<link id="appleIconLink" rel="apple-touch-icon">
 
-<link id="faviconLink" rel="icon" type="image/png" href="icons/icon-192.png">
-
-<link rel="stylesheet" href="style.css">
-
+<link id="faviconLink" rel="icon" type="image/svg+xml">
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&display=swap');
@@ -145,6 +143,8 @@ body{
 .logo-mark img{
 
   width:100%; height:100%; border-radius:50%; object-fit:cover; display:block;
+
+}
 
 .step-desc{color:var(--text-dim); font-size:14px; margin-bottom:18px;}
 
@@ -686,6 +686,32 @@ body{
 
 .add-habit-dash-form.show{display:flex; gap:8px;}
 
+
+/* ---------- Dashboard brand icon ---------- */
+.dashboard-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+.logo-mark.dashboard-logo{
+  width:42px;
+  height:42px;
+  margin:0;
+  flex-shrink:0;
+  box-shadow:0 0 22px var(--gold-glow);
+}
+.logo-mark.dashboard-logo::after{
+  width:30px;
+  height:30px;
+}
+.dashboard-app-name{
+  font-family:'Lalezar', sans-serif;
+  color:var(--gold);
+  font-size:22px;
+  line-height:1;
+  margin-top:2px;
+}
 </style>
 
 </head>
@@ -708,7 +734,7 @@ body{
 
       <div class="logo-wrap">
 
-        <div class="logo-mark"><img src="icons/icon-192.png" alt="شعار خطوة"></div>
+        <div class="logo-mark"></div>
 
         <div class="logo-title">خطوة</div>
 
@@ -756,7 +782,13 @@ body{
 
     <div class="top-row">
 
-      <div class="greet">هلا، <b id="dashName">-</b> 👋</div>
+      <div class="dashboard-brand">
+        <div class="logo-mark dashboard-logo"></div>
+        <div>
+          <div class="greet">هلا، <b id="dashName">-</b> 👋</div>
+          <div class="dashboard-app-name">خطوة</div>
+        </div>
+      </div>
 
       <div class="level-pill">⭐ <span id="levelLabel">مبتدئ</span></div>
 
@@ -899,7 +931,7 @@ body{
     </div>
 
     <div class="more-logo-wrap">
-      <div class="logo-mark small"><img src="icons/icon-192.png" alt="شعار خطوة"></div>
+      <div class="logo-mark small"></div>
       <div class="more-app-name">خطوة</div>
       <div class="more-app-tagline">كل عادة صغيرة... خطوة توصلك أبعد</div>
       <div class="more-version">الإصدار 1.0.0</div>
@@ -954,11 +986,6 @@ body{
   <button class="nav-btn reset-nav-btn" id="resetLink" type="button"><span class="ic">↻</span>إعادة</button>
 
 </nav>
-
- 
-
-<script src="script.js"></script>
-
 <script>
 
 /* ============================================================
@@ -1001,8 +1028,18 @@ const CONFIG = {
 
 ============================================================ */
 
-const APP_PNG_192 = 'icons/icon-192.png';
-const APP_PNG_512 = 'icons/icon-512.png';
+const APP_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#F3D17E"/><stop offset="45%" stop-color="#E8B84B"/>
+    <stop offset="75%" stop-color="#2EC4B6"/><stop offset="100%" stop-color="#FF6B6B"/>
+  </linearGradient></defs>
+  <rect width="200" height="200" rx="42" fill="#12102A"/>
+  <circle cx="100" cy="100" r="62" fill="none" stroke="url(#ig)" stroke-width="14"/>
+  <circle cx="100" cy="100" r="20" fill="#E8B84B"/>
+</svg>`;
+const APP_ICON_DATA = 'data:image/svg+xml;utf8,' + encodeURIComponent(APP_ICON_SVG);
+const APP_PNG_192 = APP_ICON_DATA;
+const APP_PNG_512 = APP_ICON_DATA;
 
 function setupPWA(){
 
@@ -1030,9 +1067,9 @@ function setupPWA(){
 
     icons: [
 
-      { src: APP_PNG_192, sizes: "192x192", type: "image/png", purpose: "any maskable" },
+      { src: APP_PNG_192, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
 
-      { src: APP_PNG_512, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+      { src: APP_PNG_512, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
 
     ]
 
