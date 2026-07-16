@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="ar" dir="rtl">
@@ -255,6 +256,34 @@ body{
 /* ---------- Dashboard ---------- */
 
 .top-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+/* ---------- Dashboard brand icon ---------- */
+.dashboard-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.logo-mark.dashboard-logo{
+  width:42px;
+  height:42px;
+  margin:0;
+  flex-shrink:0;
+  box-shadow:0 0 22px var(--gold-glow);
+}
+
+.logo-mark.dashboard-logo::after{
+  width:30px;
+  height:30px;
+}
+
+.dashboard-app-name{
+  font-family:'Lalezar', sans-serif;
+  color:var(--gold);
+  font-size:22px;
+  line-height:1;
+  margin-top:2px;
+}
 
 .greet{font-size:13px; color:var(--text-dim);}
 
@@ -768,7 +797,19 @@ body{
 
     <div class="top-row">
 
-      <div class="greet">هلا، <b id="dashName">-</b> 👋</div>
+      <div class="dashboard-brand">
+
+        <div class="logo-mark dashboard-logo"></div>
+
+        <div>
+
+          <div class="greet">هلا، <b id="dashName">-</b> 👋</div>
+
+          <div class="dashboard-app-name">خطوة</div>
+
+        </div>
+
+      </div>
 
       <div class="level-pill">⭐ <span id="levelLabel">مبتدئ</span></div>
 
