@@ -1,284 +1,563 @@
+
+
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+
 <title>خطوة — رفيقك اليومي في بناء عاداتك</title>
+
  
+
 <!-- ===== PWA: يخلي الملف يفتح "زي تطبيق" لما يُحفظ على الشاشة الرئيسية ===== -->
+
 <meta name="theme-color" content="#12102A">
+
 <meta name="mobile-web-app-capable" content="yes">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
+
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <meta name="apple-mobile-web-app-title" content="خطوة">
+
 <link id="manifestLink" rel="manifest">
+
 <link id="appleIconLink" rel="apple-touch-icon">
+
 <link id="faviconLink" rel="icon" type="image/svg+xml">
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&display=swap');
+
  
+
 :root{
+
   --bg:#12102A;
+
   --bg-deep:#0B0A1E;
+
   --surface:#1D1B3A;
+
   --surface-light:#2A2854;
+
   --gold:#E8B84B;
+
   --gold-glow: rgba(232,184,75,.55);
+
   --teal:#2EC4B6;
+
   --coral:#FF6B6B;
+
   --text:#F5F3FF;
+
   --text-dim:#A9A6C9;
+
   --radius: 22px;
+
 }
+
 *{box-sizing:border-box; margin:0; padding:0;}
+
 html,body{height:100%;}
+
 body{
+
   background: radial-gradient(120% 100% at 50% -10%, #241F52 0%, var(--bg) 45%, var(--bg-deep) 100%);
+
   color:var(--text);
+
   font-family:'IBM Plex Sans Arabic', sans-serif;
+
   min-height:100vh;
+
   display:flex;
+
   justify-content:center;
+
   overflow-x:hidden;
+
 }
+
 #app{
+
   width:100%;
+
   max-width:460px;
+
   min-height:100vh;
+
   position:relative;
+
   display:flex;
+
   flex-direction:column;
+
   padding-bottom:122px;
+
 }
+
 .display{font-family:'Lalezar', sans-serif; letter-spacing:.5px;}
+
  
+
 /* ---------- Screens ---------- */
+
 .screen{display:none; padding:22px 20px 120px; animation:fadeIn .35s ease;}
+
 .screen.active{display:block;}
+
 @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
  
+
 /* ---------- Onboarding ---------- */
+
 #screen-onboarding{padding-top:48px;}
+
 .logo-wrap{text-align:center; margin-bottom:28px;}
+
 .logo-mark{
+
   width:74px; height:74px; margin:0 auto 14px;
+
   background:conic-gradient(from 0deg, var(--gold), var(--teal), var(--coral), var(--gold));
+
   border-radius:50%;
+
   display:flex; align-items:center; justify-content:center;
+
   box-shadow:0 0 40px var(--gold-glow);
+
   overflow:hidden;
+
   padding:4px;
+
 }
+
 .logo-mark img{
+
   width:100%; height:100%; border-radius:50%; object-fit:cover; display:block;
+
 }
+
 .step-desc{color:var(--text-dim); font-size:14px; margin-bottom:18px;}
+
  
+
 .name-input{
+
   width:100%; padding:16px; border-radius:16px; border:1.5px solid var(--surface-light);
+
   background:var(--surface); color:var(--text); font-family:inherit; font-size:16px;
+
   outline:none;
+
 }
+
 .name-input:focus{border-color:var(--gold);}
+
  
+
 .cat-grid{display:flex; flex-direction:column; gap:10px; margin-bottom:16px;}
+
 .cat-card{
+
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:18px;
+
   padding:14px 16px; display:flex; align-items:center; gap:12px; cursor:pointer;
+
   transition:.2s;
+
 }
+
 .cat-card .emoji{font-size:26px;}
+
 .cat-card .cname{font-weight:700; font-size:15px;}
+
 .cat-card .chabits{color:var(--text-dim); font-size:12.5px; margin-top:2px;}
+
 .cat-card.open{border-color:var(--teal);}
+
 .habit-list{display:none; flex-direction:column; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--surface-light);}
+
 .habit-list.show{display:flex;}
+
 .habit-chip{
+
   display:flex; align-items:center; justify-content:space-between;
+
   background:var(--bg-deep); border:1.5px solid var(--surface-light); border-radius:12px;
+
   padding:10px 12px; font-size:13.5px; cursor:pointer;
+
 }
+
 .habit-chip.selected{border-color:var(--gold); background:rgba(232,184,75,.1);}
+
 .habit-chip .check{
+
   width:20px; height:20px; border-radius:50%; border:1.5px solid var(--text-dim);
+
   display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0;
+
 }
+
 .habit-chip.selected .check{background:var(--gold); border-color:var(--gold); color:var(--bg-deep);}
+
  
+
 .primary-btn{
+
   width:100%; padding:16px; border:none; border-radius:16px; font-family:inherit;
+
   font-size:16px; font-weight:700; cursor:pointer; margin-top:8px;
+
   background:linear-gradient(90deg, var(--gold), #f3d17e); color:var(--bg-deep);
+
   box-shadow:0 6px 20px rgba(232,184,75,.25);
+
 }
+
 .primary-btn:disabled{opacity:.4; box-shadow:none;}
+
 .ghost-btn{
+
   width:100%; padding:14px; border-radius:16px; margin-top:10px; text-align:center;
+
   background:transparent; border:1.5px solid var(--surface-light); color:var(--text-dim);
+
   font-family:inherit; font-size:14px; cursor:pointer;
+
 }
+
 .selected-count{font-size:12.5px; color:var(--text-dim); margin-top:10px; text-align:center;}
+
  
+
 /* ---------- Dashboard ---------- */
+
 .top-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+
 .greet{font-size:13px; color:var(--text-dim);}
+
 .greet b{color:var(--text);}
+
 .level-pill{
+
   background:var(--surface); border:1px solid var(--surface-light); border-radius:999px;
+
   padding:6px 12px; font-size:12px; display:flex; align-items:center; gap:6px;
+
 }
+
 .xp-bar-wrap{background:var(--surface); border-radius:999px; height:8px; margin:10px 0 22px; overflow:hidden;}
+
 .xp-bar{height:100%; background:linear-gradient(90deg, var(--teal), var(--gold)); border-radius:999px; transition:width .5s ease;}
+
  
+
 .rosette-wrap{position:relative; display:flex; justify-content:center; margin:10px 0 6px;}
+
 .rosette-center-label{
+
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+
   text-align:center; pointer-events:none;
+
 }
+
 .rosette-num{font-family:'Lalezar'; font-size:44px; color:var(--gold); line-height:1;}
+
 .rosette-cap{font-size:11px; color:var(--text-dim); margin-top:2px;}
+
  
+
 .section-title{font-size:15px; font-weight:700; margin:22px 0 12px; display:flex; align-items:center; gap:8px;}
+
 .section-title .bar{width:4px; height:16px; background:var(--teal); border-radius:2px;}
+
 .dashboard-actions{display:flex; justify-content:flex-end; margin:4px 0 12px;}
+
 .dashboard-actions .ghost-btn{
+
   width:auto; margin:0; padding:10px 12px; font-size:13px; color:var(--text);
+
 }
+
 .today-card{
+
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:16px;
+
   padding:13px 14px; display:flex; align-items:center; gap:12px; margin-bottom:10px; cursor:pointer;
+
   transition:.15s;
+
 }
+
 .today-card.done{border-color:var(--gold); background:rgba(232,184,75,.08);}
+
 .today-card .circle{
+
   width:26px; height:26px; border-radius:50%; border:2px solid var(--text-dim); flex-shrink:0;
+
   display:flex; align-items:center; justify-content:center; font-size:13px; transition:.15s;
+
 }
+
 .today-card.done .circle{background:var(--gold); border-color:var(--gold); color:var(--bg-deep);}
+
 .today-card .h-emoji{font-size:20px;}
+
 .today-card .h-name{font-size:14.5px; font-weight:600; flex:1;}
+
 .today-card .h-cat{font-size:11px; color:var(--text-dim);}
+
  
+
 .empty-hint{color:var(--text-dim); font-size:13px; text-align:center; padding:20px 10px;}
+
  
+
 /* ---------- Performance chart ---------- */
+
 .performance-card{
+
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:18px;
+
   padding:14px 14px 12px; margin-bottom:12px;
+
 }
+
 .performance-stats{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:12px;}
+
 .performance-stat{
+
   background:var(--bg-deep); border:1px solid var(--surface-light); border-radius:14px;
+
   padding:9px 6px; text-align:center; min-width:0;
+
 }
+
 .performance-stat span{display:block; color:var(--text-dim); font-size:10px; line-height:1.4; white-space:nowrap;}
+
 .performance-stat b{display:block; color:var(--text); font-size:17px; line-height:1.2; margin-top:3px;}
+
 .performance-bars{
+
   height:150px; display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px;
+
   align-items:end; padding:8px 2px 0;
+
 }
+
 .performance-day{min-width:0; display:flex; flex-direction:column; align-items:center; gap:6px;}
+
 .performance-track{
+
   width:100%; max-width:30px; height:108px; background:var(--bg-deep); border:1px solid var(--surface-light);
+
   border-radius:999px; overflow:hidden; display:flex; align-items:flex-end;
+
 }
+
 .performance-fill{
+
   width:100%; height:var(--h); background:linear-gradient(180deg,var(--teal),var(--gold));
+
   border-radius:999px 999px 0 0; transition:height .35s ease;
+
 }
+
 .performance-day.has-activity .performance-fill{min-height:6px;}
+
 .performance-day.complete .performance-fill{background:linear-gradient(180deg,#f3d17e,var(--gold)); box-shadow:0 0 12px rgba(232,184,75,.28);}
+
 .performance-day.today .performance-track{border-color:var(--gold);}
+
 .performance-percent{font-size:10px; color:var(--text-dim); min-height:13px; line-height:1;}
+
 .performance-label{font-size:10.5px; color:var(--text-dim); line-height:1; white-space:nowrap;}
+
 .performance-day.today .performance-label{color:var(--gold); font-weight:700;}
+
 .performance-note{font-size:12px; color:var(--text-dim); text-align:center; line-height:1.7; margin-top:10px;}
+
  
+
 /* ---------- Challenges ---------- */
+
 .challenge-card{
+
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:18px;
+
   padding:16px; margin-bottom:12px;
+
 }
+
 .challenge-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;}
+
 .challenge-title{font-size:15.5px; font-weight:700;}
+
 .challenge-days{font-size:11px; color:var(--teal); font-weight:700; background:rgba(46,196,182,.12); padding:4px 9px; border-radius:999px;}
+
 .challenge-desc{color:var(--text-dim); font-size:13px; margin-bottom:12px; line-height:1.7;}
+
 .challenge-progress-wrap{background:var(--bg-deep); border-radius:999px; height:7px; overflow:hidden; margin-bottom:10px;}
+
 .challenge-progress{height:100%; background:linear-gradient(90deg,var(--coral),var(--gold)); border-radius:999px;}
+
 .small-btn{
+
   padding:10px 14px; border-radius:12px; border:none; font-family:inherit; font-weight:700;
+
   font-size:13px; cursor:pointer; background:var(--surface-light); color:var(--text);
+
 }
+
 .small-btn.active{background:var(--gold); color:var(--bg-deep);}
+
  
+
 /* ---------- Achievements ---------- */
+
 .badge-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+
 .badge-card{
+
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:16px;
+
   padding:14px 8px; text-align:center; opacity:.35; filter:grayscale(1);
+
 }
+
 .badge-card.unlocked{opacity:1; filter:none; border-color:var(--gold); box-shadow:0 0 18px rgba(232,184,75,.18);}
+
 .badge-emoji{font-size:26px; margin-bottom:6px;}
+
 .badge-name{font-size:11.5px; font-weight:700;}
+
 .badge-desc{font-size:10px; color:var(--text-dim); margin-top:3px; line-height:1.4;}
+
  
+
 /* ---------- Screen headers ---------- */
+
 .screen-heading{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;}
+
 .screen-heading .section-title{margin:0;}
+
 .istighfar-card{
+
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:22px;
+
   padding:24px 18px; text-align:center; box-shadow:0 10px 28px rgba(0,0,0,.18);
+
 }
+
 .istighfar-title{font-size:17px; font-weight:800; margin-bottom:12px; color:var(--gold);}
+
 .counter-display{
+
   font-family:'Lalezar', sans-serif; font-size:72px; line-height:1; color:var(--teal);
+
   margin:8px 0 10px;
+
 }
+
 .counter-meta{color:var(--text-dim); font-size:13px; margin-bottom:16px;}
+
 .counter-actions{display:flex; gap:10px; justify-content:center; margin-bottom:10px; flex-wrap:wrap;}
+
 .counter-actions .primary-btn,
 .counter-actions .ghost-btn{
+
   width:auto; min-width:110px; margin:0;
+
 }
+
 .counter-actions .ghost-btn{color:var(--text); border-color:var(--surface-light);} 
+
 .istighfar-summary{
+
   margin-top:14px; padding:12px; border-radius:14px; background:rgba(46,196,182,.12);
+
   border:1px solid rgba(46,196,182,.22); color:var(--text);
+
 }
+
 .istighfar-summary strong{color:var(--gold);} 
+
+.istighfar-duas{
+  margin-top:14px; display:flex; flex-direction:column; gap:10px; text-align:right;
+}
+
+.istighfar-dua{
+  padding:12px 14px; border-radius:14px; background:rgba(232,184,75,.08);
+  border:1px solid rgba(232,184,75,.22); color:var(--text); font-size:13.5px; line-height:1.8;
+}
+
+.istighfar-dua strong{display:block; color:var(--gold); font-size:12px; margin-bottom:3px;}
+
 .back-home-btn{
+
   width:36px; height:36px; border:none; border-radius:12px; flex-shrink:0;
+
   background:var(--surface); color:var(--text); border:1px solid var(--surface-light);
+
   font-family:inherit; font-size:22px; line-height:1; cursor:pointer;
+
 }
+
 .back-home-btn:active{transform:scale(.95);}
+
  
+
 .share-achievement-btn{
+
   min-height:44px; padding:10px 12px; border:none; border-radius:12px;
+
   background:linear-gradient(90deg, var(--teal), #69d8ce); color:var(--bg-deep);
+
   font-family:inherit; font-size:13px; font-weight:800; cursor:pointer; white-space:nowrap;
+
 }
+
 .share-achievement-btn:active{transform:scale(.98);}
+
 .share-achievement-inline{width:100%; margin:0 0 4px;}
+
  
+
 /* ---------- More screen ---------- */
+
 .screen-top-nav{
   display:flex; align-items:center; gap:10px; margin-bottom:18px;
 }
+
 .icon-btn{
   width:42px; height:42px; border:none; border-radius:50%;
   background:rgba(255,255,255,.08); color:var(--text); font-size:18px;
   display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
+
 .screen-top-title{
   font-size:20px; font-weight:800; color:var(--text);
 }
+
 .more-logo-wrap{text-align:center; margin-bottom:26px;}
 .logo-mark.small{width:56px; height:56px; margin:0 auto 10px;}
 .logo-mark.small::after{width:40px; height:40px;}
 .more-app-name{font-family:'Lalezar'; font-size:26px; color:var(--gold);}
 .more-app-tagline{font-size:12.5px; color:var(--text-dim); margin-top:4px;}
 .more-version{font-size:11px; color:var(--text-dim); margin-top:8px; background:var(--surface); display:inline-block; padding:4px 12px; border-radius:999px; border:1px solid var(--surface-light);}
+
 .more-card{
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:18px;
   padding:6px; margin-bottom:6px;
@@ -294,12 +573,15 @@ body{
 .more-contact-label{font-size:11.5px; color:var(--text-dim);}
 .more-contact-value{font-size:14px; font-weight:700; margin-top:2px;}
 .more-contact-arrow{color:var(--text-dim); font-size:14px;}
+
 .more-about-text{padding:14px 14px 6px; font-size:13.5px; color:var(--text-dim); line-height:1.9;}
-.more-developer{padding:0 14px 14px; font-size:12px; color:var(--teal); font-weight:700;}
-.license-notice{
-  margin-top:4px; padding:13px 14px; border-radius:14px; background:rgba(255,107,107,.08);
-  border:1px solid rgba(255,107,107,.25); color:var(--text-dim); font-size:12.5px; line-height:1.9;
+.more-note{
+  margin:4px 14px 14px; padding:12px 14px; border-radius:14px;
+  background:rgba(232,184,75,.08); border:1px solid rgba(232,184,75,.22);
+  color:var(--text); font-size:13px; line-height:1.9;
 }
+.more-developer{padding:0 14px 14px; font-size:12px; color:var(--teal); font-weight:700;}
+
 .faq-item{
   background:var(--surface); border:1.5px solid var(--surface-light); border-radius:14px;
   margin-bottom:8px; overflow:hidden;
@@ -312,66 +594,116 @@ body{
 .faq-item.open .faq-caret{transform:rotate(180deg);}
 .faq-answer{display:none; padding:0 14px 14px; font-size:13px; color:var(--text-dim); line-height:1.8;}
 .faq-item.open .faq-answer{display:block;}
-.dua-card{
-  background:var(--surface); border:1.5px solid var(--surface-light); border-radius:16px;
-  padding:14px 16px; margin-bottom:10px; text-align:right;
-}
-.dua-title{font-size:12.5px; font-weight:700; color:var(--teal); margin-bottom:6px;}
-.dua-text{font-size:14.5px; line-height:2; color:var(--text);}
+
 /* ---------- Bottom nav ---------- */
+
 #bottom-nav{
+
   position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:460px;
+
   background:rgba(29,27,58,.92); backdrop-filter:blur(14px); border-top:1px solid var(--surface-light);
+
   display:flex; justify-content:space-around; padding:10px 6px 14px; z-index:50;
+
 }
+
 .nav-btn{
+
   background:none; border:none; color:var(--text-dim); font-family:inherit; font-size:11px;
+
   display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; flex:1;
+
 }
+
 .nav-btn .ic{font-size:20px;}
+
 .nav-btn.active{color:var(--gold);}
+
 .nav-btn.reset-nav-btn{color:#F19A9A;}
+
  
+
 /* ---------- Toast / confetti ---------- */
+
 #toast{
+
   position:fixed; top:24px; left:50%; transform:translateX(-50%) translateY(-40px);
+
   background:var(--surface); border:1.5px solid var(--gold); color:var(--text);
+
   padding:12px 20px; border-radius:14px; font-size:13.5px; font-weight:600; z-index:100;
+
   opacity:0; transition:.35s; text-align:center; max-width:88%;
+
 }
+
 #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
 #confetti-canvas{position:fixed; inset:0; pointer-events:none; z-index:99;}
+
  
+
 /* ---------- Add custom habit ---------- */
+
 .add-cat-card{
+
   border:1.5px dashed var(--teal); background:rgba(46,196,182,.06);
+
 }
+
 .add-cat-card .cname{color:var(--teal);}
+
 .add-habit-row{display:flex; gap:8px; margin-top:4px;}
+
 .add-habit-input{
+
   flex:1; padding:11px 12px; border-radius:12px; border:1.5px solid var(--surface-light);
+
   background:var(--bg-deep); color:var(--text); font-family:inherit; font-size:13.5px; outline:none;
+
 }
+
 .add-habit-input:focus{border-color:var(--teal);}
+
 .add-habit-btn{
+
   padding:11px 16px; border:none; border-radius:12px; background:var(--teal); color:var(--bg-deep);
+
   font-family:inherit; font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap;
+
 }
+
 .custom-habit-tag{
+
   display:inline-flex; align-items:center; gap:6px; background:var(--bg-deep); border:1.5px solid var(--teal);
+
   border-radius:999px; padding:6px 10px 6px 6px; font-size:12.5px; margin:4px 6px 0 0;
+
 }
+
 .custom-habit-tag .rm{
+
   width:16px; height:16px; border-radius:50%; background:var(--surface-light); display:flex;
+
   align-items:center; justify-content:center; font-size:10px; cursor:pointer; color:var(--text-dim);
+
 }
+
 .add-habit-card-dash{
+
   border:1.5px dashed var(--teal); background:rgba(46,196,182,.06); border-radius:16px;
+
   padding:13px 14px; margin-bottom:10px; cursor:pointer; text-align:center; color:var(--teal);
+
   font-weight:700; font-size:13.5px;
+
 }
+
 .add-habit-dash-form{display:none; margin-top:10px;}
+
 .add-habit-dash-form.show{display:flex; gap:8px;}
+
+
 /* ---------- Dashboard brand icon ---------- */
 .dashboard-brand{
   display:flex;
@@ -398,40 +730,75 @@ body{
   margin-top:2px;
 }
 </style>
+
 </head>
+
 <body>
+
 <canvas id="confetti-canvas"></canvas>
+
 <div id="toast"></div>
+
 <div id="app">
+
  
+
   <!-- ============ ONBOARDING ============ -->
+
   <section id="screen-onboarding" class="screen active">
+
     <div id="ob-step-1">
+
       <div class="logo-wrap">
+
         <div class="logo-mark"></div>
+
         <div class="logo-title">خطوة</div>
+
         <div class="logo-sub">كل عادة صغيرة... خطوة توصلك أبعد</div>
+
       </div>
+
       <div class="step-label">وش اسمك؟</div>
+
       <div class="step-heading">تعال نبدأ رحلتك</div>
+
       <div class="step-desc">اكتب اسمك عشان نخصص لك التطبيق</div>
+
       <input class="name-input" id="nameInput" placeholder="مثال: سارة" maxlength="20">
+
       <button class="primary-btn" id="ob1-next">التالي ←</button>
+
     </div>
+
  
+
     <div id="ob-step-2" style="display:none;">
+
       <div class="step-label">اختر عاداتك</div>
+
       <div class="step-heading">وش تبي تطوّر بحياتك؟</div>
+
       <div class="step-desc">اختر 3 عادات أو أكثر تبي تبدأ فيها (تقدر تغيّرها لاحقًا)</div>
+
       <div class="cat-grid" id="catGrid"></div>
+
       <div class="selected-count" id="selCount">0 عادة مختارة</div>
+
       <button class="primary-btn" id="ob2-next" disabled>ابدأ رحلتي 🚀</button>
+
     </div>
+
   </section>
+
  
+
   <!-- ============ DASHBOARD ============ -->
+
   <section id="screen-dashboard" class="screen">
+
     <div class="top-row">
+
       <div class="dashboard-brand">
         <div class="logo-mark dashboard-logo"></div>
         <div>
@@ -439,85 +806,160 @@ body{
           <div class="dashboard-app-name">خطوة</div>
         </div>
       </div>
+
       <div class="level-pill">⭐ <span id="levelLabel">مبتدئ</span></div>
+
     </div>
+
     <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar" style="width:0%"></div></div>
+
  
+
     <div class="rosette-wrap">
+
       <svg id="rosetteSvg" width="260" height="260" viewBox="0 0 300 300"></svg>
+
       <div class="rosette-center-label">
+
         <div class="rosette-num" id="streakNum">0</div>
+
         <div class="rosette-cap">يوم متتالي</div>
+
       </div>
+
     </div>
+
  
+
     <div class="section-title"><span class="bar"></span> أداء الالتزام</div>
+
     <div id="performanceChart"></div>
+
     <button class="share-achievement-btn share-achievement-inline" id="shareAchievementBtn" type="button">مشاركة الإنجاز كصورة</button>
+
  
+
     <div class="section-title"><span class="bar"></span> عادات اليوم</div>
+
     <div class="dashboard-actions">
+
       <button class="ghost-btn" id="editHabitsBtn" type="button">✏️ تعديل عاداتي</button>
+
     </div>
+
     <div id="todayList"></div>
+
  
+
     <div class="add-habit-card-dash" id="dashAddCard">
+
       <div id="dashAddLabel">➕ أضف عادة جديدة</div>
+
       <div class="add-habit-dash-form" id="dashAddForm">
+
         <input class="add-habit-input" id="dashHabitInput" placeholder="اكتب اسم العادة">
+
         <button class="add-habit-btn" id="dashHabitAddBtn">إضافة</button>
+
       </div>
+
     </div>
+
   </section>
+
  
+
   <!-- ============ ISTIGHFAR ============ -->
+
   <section id="screen-istighfar" class="screen">
+
     <div class="screen-heading">
+
       <div class="section-title"><span class="bar"></span> عداد الاستغفار</div>
+
       <button class="back-home-btn" type="button" data-home aria-label="العودة للرئيسية" title="العودة للرئيسية">←</button>
+
     </div>
+
     <div class="istighfar-card">
+
       <div class="istighfar-title">أستغفر الله وأتوب إليه</div>
+
       <div class="counter-display" id="istighfarCountDisplay">0</div>
+
       <div class="counter-meta">عدد الاستغفار الحالي</div>
+
       <div class="counter-actions">
+
         <button class="primary-btn" id="istighfarAddBtn" type="button">استغفر الآن</button>
+
       </div>
+
       <div class="istighfar-summary" id="istighfarSummary">العداد الحالي: <strong>0</strong> · الإجمالي: <strong>0</strong></div>
+
+      <div class="istighfar-duas">
+        <div class="istighfar-dua"><strong>دعاء</strong>اللهم اغفر لي ذنبي كله، دقه وجله، أوله وآخره، علانيته وسره.</div>
+        <div class="istighfar-dua"><strong>دعاء</strong>رب اغفر لي وتب علي إنك أنت التواب الرحيم.</div>
+        <div class="istighfar-dua"><strong>دعاء</strong>اللهم إنك عفو تحب العفو فاعف عني.</div>
+      </div>
+
       <button class="ghost-btn" id="istighfarResetBtn" type="button">إعادة تعيين الحِسبة الحالية</button>
+
     </div>
-    <div class="section-title" style="margin-top:22px;"><span class="bar"></span> أدعية الاستغفار</div>
-    <div class="dua-list" id="duaList"></div>
+
   </section>
+
+
+
   <!-- ============ CHALLENGES ============ -->
+
   <section id="screen-challenges" class="screen">
+
     <div class="screen-heading">
+
       <div class="section-title"><span class="bar"></span> تحديات 30 يوم</div>
+
       <button class="back-home-btn" type="button" data-home aria-label="العودة للرئيسية" title="العودة للرئيسية">←</button>
+
     </div>
+
     <div id="challengeList"></div>
+
   </section>
+
  
+
   <!-- ============ ACHIEVEMENTS ============ -->
+
   <section id="screen-achievements" class="screen">
+
     <div class="screen-heading">
+
       <div class="section-title"><span class="bar"></span> إنجازاتك</div>
+
       <button class="back-home-btn" type="button" data-home aria-label="العودة للرئيسية" title="العودة للرئيسية">←</button>
+
     </div>
+
     <div class="badge-grid" id="badgeGrid"></div>
+
   </section>
+
   <!-- ============ MORE ============ -->
+
   <section id="screen-more" class="screen">
     <div class="screen-top-nav">
       <button class="icon-btn" data-home="1" title="الرجوع للرئيسية">→</button>
       <div class="screen-top-title">المزيد</div>
     </div>
+
     <div class="more-logo-wrap">
       <div class="logo-mark small"></div>
       <div class="more-app-name">خطوة</div>
       <div class="more-app-tagline">كل عادة صغيرة... خطوة توصلك أبعد</div>
       <div class="more-version">الإصدار 1.0.0</div>
     </div>
+
     <div class="section-title"><span class="bar"></span> تواصل معنا</div>
     <div class="more-card">
       <a class="more-contact-row" href="https://instagram.com/NKMMLK_STORE" target="_blank" rel="noopener">
@@ -537,46 +979,79 @@ body{
         <span class="more-contact-arrow">←</span>
       </a>
     </div>
+
     <div class="section-title"><span class="bar"></span> عن خطوة</div>
     <div class="more-card">
       <p class="more-about-text">"خطوة" تطبيق سعودي بسيط يساعدك تبني عاداتك اليومية بطريقة ممتعة ومحفزة — من دراسة وصلاة ورياضة وتطوير ذاتي — بدون تعقيد. كل بياناتك تُحفظ على جهازك فقط، وما نطلب منك تسجيل حساب أو مشاركة معلوماتك مع أي جهة.</p>
+      <div class="more-note">عزيزي المستخدم، كل نسخة خاصة بعميل واحد، ولا أحلل النشر. إذا أردت نشر الفائدة فشارك أحبابك متجرنا.</div>
       <div class="more-developer">تطوير: FRZ</div>
     </div>
-    <div class="license-notice">عزيزي المستخدم، كل نسخة من "خطوة" خاصة بعميل واحد فقط ولا نسمح بإعادة نشرها أو توزيعها. إذا حبيت تنشر الفايدة لأحبابك، وجّههم لمتجرنا ليحصلوا على نسختهم الخاصة 🌱</div>
+
     <div class="section-title"><span class="bar"></span> أسئلة شائعة</div>
     <div class="faq-list" id="faqList"></div>
   </section>
+
  
+
 </div>
+
 <nav id="bottom-nav">
+
   <button class="nav-btn active" data-screen="dashboard"><span class="ic">🏠</span>الرئيسية</button>
+
   <button class="nav-btn" data-screen="istighfar"><span class="ic">🙏</span>استغفار</button>
+
   <button class="nav-btn" data-screen="challenges"><span class="ic">🔥</span>تحديات</button>
+
   <button class="nav-btn" data-screen="achievements"><span class="ic">🏆</span>إنجازات</button>
+
   <button class="nav-btn" data-screen="more"><span class="ic">⋯</span>المزيد</button>
+
   <button class="nav-btn reset-nav-btn" id="resetLink" type="button"><span class="ic">↻</span>إعادة</button>
+
 </nav>
 <script>
+
 /* ============================================================
+
    ⚙️ إعدادات التخصيص — عدّل هنا فقط عشان تخصص نسخة لكل زبون
+
    ============================================================
+
    لو حطيت اسم بين القوسين، التطبيق بيتخطى خطوة "اكتب اسمك"
+
    وبيخاطب الشخص باسمه مباشرة من أول ثانية (خدمة تخصيص تقدر تبيعها
+
    كإضافة مدفوعة فوق سعر المنتج الأساسي).
+
    مثال: presetName: "سارة"
+
 ============================================================ */
+
 const CONFIG = {
+
   presetName: ""   // اكتب اسم الزبون هنا بين علامتي التنصيص قبل ما ترسل له الملف
+
 };
+
  
+
 /* ============================================================
+
    PWA SETUP — أيقونة + Manifest + Service Worker
+
    كلها مدمجة جوا الملف نفسه (ملف واحد فقط)، بس تشتغل بكامل
+
    مفعولها فقط لما الملف يكون مستضاف على رابط https (مثل GitHub Pages
+
    أو منصة سلة). لو المستخدم فتح الملف مباشرة من الجوال (بدون استضافة)،
+
    الأيقونة والاسم على الشاشة الرئيسية بيشتغلوا، لكن وضع "standalone"
+
    الكامل (بدون شريط المتصفح) يحتاج استضافة حقيقية.
+
 ============================================================ */
+
 const APP_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0%" stop-color="#F3D17E"/><stop offset="45%" stop-color="#E8B84B"/>
@@ -589,823 +1064,1635 @@ const APP_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 2
 const APP_ICON_DATA = 'data:image/svg+xml;utf8,' + encodeURIComponent(APP_ICON_SVG);
 const APP_PNG_192 = APP_ICON_DATA;
 const APP_PNG_512 = APP_ICON_DATA;
+
 function setupPWA(){
+
   document.getElementById('appleIconLink').setAttribute('href', APP_PNG_192);
+
   document.getElementById('faviconLink').setAttribute('href', APP_PNG_192);
+
  
+
   const manifest = {
+
     name: "خطوة - تتبع عاداتك اليومية",
+
     short_name: "خطوة",
+
     start_url: "./",
+
     display: "standalone",
+
     orientation: "portrait",
+
     background_color: "#12102A",
+
     theme_color: "#12102A",
+
     icons: [
+
       { src: APP_PNG_192, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+
       { src: APP_PNG_512, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+
     ]
+
   };
+
   const manifestBlob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+
   document.getElementById('manifestLink').setAttribute('href', URL.createObjectURL(manifestBlob));
+
  
+
   // Service Worker بسيط جدًا (يخزن الملف نفسه للعمل بدون إنترنت)
+
   // ملاحظة: يحتاج استضافة https (لا يشتغل من file:// مباشرة — قيد أماني من المتصفح)
+
   if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname==='localhost')){
+
     const swCode = `
+
       self.addEventListener('install', e => self.skipWaiting());
+
       self.addEventListener('activate', e => self.clients.claim());
+
       self.addEventListener('fetch', e => {
+
         e.respondWith(fetch(e.request).catch(()=> caches.match(e.request)));
+
       });
+
     `;
+
     const swBlob = new Blob([swCode], {type:'application/javascript'});
+
     navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
+
   }
+
 }
+
 setupPWA();
+
  
+
 /* ============================================================
+
    DATA
+
 ============================================================ */
+
 const CATEGORIES = [
+
   { id:'spirit', emoji:'🕌', name:'روحانيات', habits:[
+
     {id:'quran', name:'قراءة قرآن (ولو صفحة)'},
+
     {id:'azkar', name:'أذكار الصباح والمساء'},
-    {id:'fajr', name:'صلاة الفجر بوقتها'},
+
+    {id:'fajr', name:'أداء الصلوات بوقتها'},
+
   ]},
+
   { id:'study', emoji:'📚', name:'دراسة وتعلم', habits:[
+
     {id:'study30', name:'مذاكرة 30 دقيقة'},
+
     {id:'homework', name:'حل الواجبات أول بأول'},
+
     {id:'readbook', name:'قراءة 10 صفحات من كتاب'},
+
   ]},
+
   { id:'health', emoji:'💪', name:'رياضة وصحة', habits:[
+
     {id:'exercise', name:'تمرين أو مشي 15 دقيقة'},
+
     {id:'water', name:'شرب 8 أكواب ماء'},
+
     {id:'sleep', name:'النوم قبل الساعة 11'},
+
   ]},
+
   { id:'growth', emoji:'🧠', name:'تطوير ذاتي', habits:[
+
     {id:'journal', name:'كتابة 3 أسطر يوميات'},
+
     {id:'skill', name:'تعلم مهارة جديدة 10 دقائق'},
+
     {id:'nophone', name:'ساعة بدون جوال قبل النوم'},
+
   ]},
+
 ];
+
 const ALL_HABITS = CATEGORIES.flatMap(c => c.habits.map(h => ({...h, cat:c.id, emoji:c.emoji, catName:c.name})));
+
  
+
 const CHALLENGES = [
+
   { id:'read30', title:'تحدي القراءة', days:30, desc:'اقرأ 10 صفحات كل يوم لمدة 30 يوم وشوف كيف تتغير مفرداتك وتركيزك.' },
+
   { id:'sport30', title:'تحدي الرياضة', days:30, desc:'15 دقيقة نشاط بدني يوميًا. ما نبي بطولة، نبي استمرارية.' },
+
   { id:'earlybird', title:'تحدي الاستيقاظ المبكر', days:21, desc:'انهض قبل الساعة 7 صباحًا لمدة 21 يوم وابني روتين صباحي يميزك.' },
+
   { id:'hydrate', title:'تحدي الترطيب', days:14, desc:'8 أكواب ماء يوميًا لمدة أسبوعين. جسمك بيشكرك.' },
+
 ];
+
  
+
 const BADGES = [
+
   { id:'first', name:'أول خطوة', emoji:'👣', desc:'سجّلت أول يوم لك', check:s => s.totalDaysActive >= 1 },
+
   { id:'week', name:'أسبوع كامل', emoji:'🔥', desc:'7 أيام متتالية', check:s => s.streak >= 7 },
+
   { id:'twoweek', name:'مثابر', emoji:'💎', desc:'14 يوم متتالي', check:s => s.streak >= 14 },
+
   { id:'month', name:'شهر الإنجاز', emoji:'🏅', desc:'30 يوم متتالي', check:s => s.streak >= 30 },
+
   { id:'hundred', name:'نجم المثابرة', emoji:'🌟', desc:'100 يوم إجمالي', check:s => s.totalDaysActive >= 100 },
+
   { id:'challenge', name:'بطل التحدي', emoji:'🏆', desc:'أكملت تحدي كامل', check:s => s.completedChallenges >= 1 },
+
 ];
+
  
+
 const LEVELS = [
+
   {min:0, name:'مبتدئ'}, {min:100, name:'مجتهد'}, {min:300, name:'منضبط'},
+
   {min:700, name:'محترف'}, {min:1500, name:'أسطورة'},
+
 ];
+
  
+
 /* ============================================================
+
    STATE
+
 ============================================================ */
+
 const STORAGE_KEY = 'khatwa_state_v1';
+
 function defaultState(){
+
   return { name:'', selectedHabits:[], logs:{}, xp:0, joinedChallenge:null, challengeStart:null, badgesUnlocked:[], completedChallenges:0, customHabits:[], istighfarCount:0, istighfarTotal:0 };
+
 }
+
 function getHabitById(id){
+
   return ALL_HABITS.find(h=>h.id===id) || (state.customHabits||[]).find(h=>h.id===id);
+
 }
+
 let state = loadState();
+
 function loadState(){
+
   try{
+
     const raw = localStorage.getItem(STORAGE_KEY);
+
     if(!raw) return defaultState();
+
     return {...defaultState(), ...JSON.parse(raw)};
+
   }catch(e){ return defaultState(); }
+
 }
+
 function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
  
+
 function todayStr(d=new Date()){ return d.toISOString().slice(0,10); }
+
 function dateMinus(n){ const d=new Date(); d.setDate(d.getDate()-n); return todayStr(d); }
+
  
+
 /* ============================================================
+
    DERIVED STATS
+
 ============================================================ */
+
 function dayComplete(dateStr){
+
   const log = state.logs[dateStr];
+
   if(!log || state.selectedHabits.length===0) return false;
+
   return state.selectedHabits.every(h => log.includes(h));
+
 }
+
 function computeStreak(){
+
   let streak = 0;
+
   let i = 0;
+
   // allow today to be "in progress" without breaking streak count for yesterday
+
   while(true){
+
     const d = dateMinus(i);
+
     if(dayComplete(d)){ streak++; i++; }
+
     else if(i===0){ i++; continue; } // today not finished yet, check yesterday
+
     else break;
+
   }
+
   return streak;
+
 }
+
 function totalDaysActive(){
+
   return Object.keys(state.logs).filter(d => state.logs[d] && state.logs[d].length>0).length;
+
 }
+
 function currentLevel(){
+
   let lvl = LEVELS[0];
+
   for(const l of LEVELS) if(state.xp >= l.min) lvl = l;
+
   return lvl;
+
 }
+
 function nextLevelXp(){
+
   const idx = LEVELS.findIndex(l=>l.name===currentLevel().name);
+
   return idx < LEVELS.length-1 ? LEVELS[idx+1].min : LEVELS[idx].min + 500;
+
 }
+
 function dayPerformance(dateStr){
+
   const selected = state.selectedHabits || [];
+
   const log = Array.isArray(state.logs[dateStr]) ? state.logs[dateStr] : [];
+
   const done = new Set(log.filter(id => selected.includes(id))).size;
+
   const total = selected.length;
+
   const percent = total ? Math.round((done / total) * 100) : 0;
+
   return { date: dateStr, done, total, percent, complete: total > 0 && done === total };
+
 }
+
 function chartDayLabel(dateStr, offset){
+
   if(offset === 0) return 'اليوم';
+
   const date = new Date(dateStr + 'T12:00:00');
+
   return new Intl.DateTimeFormat('ar-SA', { weekday:'short' }).format(date);
+
 }
+
 function weeklyPerformance(days=7){
+
   return Array.from({length:days}, (_, i)=>{
+
     const offset = days - 1 - i;
+
     const date = dateMinus(offset);
+
     return { ...dayPerformance(date), label: chartDayLabel(date, offset), isToday: offset === 0 };
+
   });
+
 }
+
  
+
 /* ============================================================
+
    TOAST + CONFETTI
+
 ============================================================ */
+
 function toast(msg){
+
   const t = document.getElementById('toast');
+
   t.textContent = msg;
+
   t.classList.add('show');
+
   setTimeout(()=>t.classList.remove('show'), 2200);
+
 }
+
 function confetti(){
+
   const canvas = document.getElementById('confetti-canvas');
+
   canvas.width = innerWidth; canvas.height = innerHeight;
+
   const ctx = canvas.getContext('2d');
+
   const colors = ['#E8B84B','#2EC4B6','#FF6B6B','#F5F3FF'];
+
   const parts = Array.from({length:60}, ()=>({
+
     x: innerWidth/2, y: innerHeight*0.35,
+
     vx:(Math.random()-0.5)*11, vy: Math.random()*-9-3,
+
     g: 0.28, size: Math.random()*6+4, color: colors[Math.floor(Math.random()*colors.length)],
+
     rot: Math.random()*360, vr:(Math.random()-0.5)*14
+
   }));
+
   let frame=0;
+
   function draw(){
+
     frame++;
+
     ctx.clearRect(0,0,canvas.width,canvas.height);
+
     parts.forEach(p=>{
+
       p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+
       ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+
       ctx.fillStyle = p.color; ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+
       ctx.restore();
+
     });
+
     if(frame<70) requestAnimationFrame(draw); else ctx.clearRect(0,0,canvas.width,canvas.height);
+
   }
+
   draw();
+
 }
+
  
+
 /* ============================================================
+
    ROSETTE (signature visual): 30-petal geometric bloom
+
 ============================================================ */
+
 function renderRosette(){
+
   const svg = document.getElementById('rosetteSvg');
+
   const streak = computeStreak();
+
   const cx=150, cy=150, N=30;
+
   let html = '';
+
   // outer faint guide ring
+
   html += `<circle cx="${cx}" cy="${cy}" r="132" fill="none" stroke="#2A2854" stroke-width="1" opacity="0.5"/>`;
+
   for(let i=0;i<N;i++){
+
     const angle = -90 + i*(360/N);
+
     const rad = angle*Math.PI/180;
+
     const isWeekMark = (i+1)%7===0;
+
     const len = isWeekMark ? 128 : 112;
+
     const wid = isWeekMark ? 15 : 11;
+
     const tipX = cx + len*Math.cos(rad);
+
     const tipY = cy + len*Math.sin(rad);
+
     const perpX = Math.cos(rad+Math.PI/2)*wid;
+
     const perpY = Math.sin(rad+Math.PI/2)*wid;
+
     const midLen = len*0.55;
+
     const midX = cx + midLen*Math.cos(rad);
+
     const midY = cy + midLen*Math.sin(rad);
+
     const c1x = midX+perpX, c1y = midY+perpY;
+
     const c2x = midX-perpX, c2y = midY-perpY;
+
     const path = `M${cx},${cy} Q${c1x},${c1y} ${tipX},${tipY} Q${c2x},${c2y} ${cx},${cy} Z`;
+
     const filled = i < streak;
+
     let fill = 'rgba(169,166,201,0.12)';
+
     let stroke = '#2A2854';
+
     if(filled){
+
       if(i<7){ fill='url(#gradTeal)'; }
+
       else if(i<14){ fill='url(#gradGold)'; }
+
       else if(i<21){ fill='url(#gradCoral)'; }
+
       else { fill='url(#gradGold)'; }
+
       stroke = 'rgba(0,0,0,0)';
+
     }
+
     const glow = filled ? 'filter="url(#softGlow)"' : '';
+
     html += `<path d="${path}" fill="${fill}" stroke="${stroke}" stroke-width="1" ${glow}/>`;
+
   }
+
   html += `<circle cx="${cx}" cy="${cy}" r="26" fill="#0B0A1E" stroke="#E8B84B" stroke-width="2"/>`;
+
   const defs = `<defs>
+
     <linearGradient id="gradGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F3D17E"/><stop offset="100%" stop-color="#E8B84B"/></linearGradient>
+
     <linearGradient id="gradTeal" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6FE0D4"/><stop offset="100%" stop-color="#2EC4B6"/></linearGradient>
+
     <linearGradient id="gradCoral" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF9A9A"/><stop offset="100%" stop-color="#FF6B6B"/></linearGradient>
+
     <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+
   </defs>`;
+
   svg.innerHTML = defs + html;
+
   document.getElementById('streakNum').textContent = streak;
+
 }
+
  
+
 /* ============================================================
+
    RENDER: ONBOARDING
+
 ============================================================ */
+
 function renderCategoryGrid(){
+
   const grid = document.getElementById('catGrid');
+
   grid.innerHTML = '';
+
   CATEGORIES.forEach(cat=>{
+
     const card = document.createElement('div');
+
     card.className = 'cat-card';
+
     card.innerHTML = `
+
       <div class="emoji">${cat.emoji}</div>
+
       <div style="flex:1">
+
         <div class="cname">${cat.name}</div>
+
         <div class="chabits">${cat.habits.length} عادات · اضغط للاختيار</div>
+
       </div>
+
       <div class="habit-list" id="hl-${cat.id}">
+
         ${cat.habits.map(h=>`
+
           <div class="habit-chip ${state.selectedHabits.includes(h.id)?'selected':''}" data-hid="${h.id}">
+
             <span>${h.name}</span>
+
             <span class="check">✓</span>
+
           </div>`).join('')}
+
       </div>
+
     `;
+
     grid.appendChild(card);
+
     card.addEventListener('click', (e)=>{
+
       if(e.target.closest('.habit-chip')) return;
+
       const list = card.querySelector('.habit-list');
+
       list.classList.toggle('show');
+
       card.classList.toggle('open');
+
     });
+
     card.querySelectorAll('.habit-chip').forEach(chip=>{
+
       chip.addEventListener('click', ()=>{
+
         const hid = chip.dataset.hid;
+
         const idx = state.selectedHabits.indexOf(hid);
+
         if(idx>=0) state.selectedHabits.splice(idx,1);
+
         else state.selectedHabits.push(hid);
+
         chip.classList.toggle('selected');
+
         updateSelCount();
+
       });
+
     });
+
   });
+
  
+
   // ---- بطاقة "أضف عادتك الخاصة" ----
+
   const addCard = document.createElement('div');
+
   addCard.className = 'cat-card add-cat-card';
+
   addCard.innerHTML = `
+
     <div class="emoji">➕</div>
+
     <div style="flex:1">
+
       <div class="cname">عادتك الخاصة</div>
+
       <div class="chabits">ما لقيت عادتك؟ اكتبها بنفسك</div>
+
     </div>
+
     <div class="habit-list" id="hl-custom">
+
       <div class="add-habit-row">
+
         <input class="add-habit-input" id="customHabitInput" placeholder="مثال: ممارسة الرسم يوميًا" maxlength="40">
+
         <button class="add-habit-btn" id="customHabitAddBtn">إضافة</button>
+
       </div>
+
       <div id="customHabitTags"></div>
+
     </div>
+
   `;
+
   grid.appendChild(addCard);
+
   addCard.addEventListener('click', (e)=>{
+
     if(e.target.closest('.habit-list')) return;
+
     const list = addCard.querySelector('.habit-list');
+
     list.classList.toggle('show');
+
     addCard.classList.toggle('open');
+
   });
+
   renderCustomHabitTags();
+
   document.getElementById('customHabitAddBtn').addEventListener('click', ()=>{
+
     const input = document.getElementById('customHabitInput');
+
     const name = input.value.trim();
+
     if(!name) return;
+
     addCustomHabit(name);
+
     input.value='';
+
     renderCustomHabitTags();
+
     updateSelCount();
+
   });
+
   document.getElementById('customHabitInput').addEventListener('keydown', (e)=>{
+
     if(e.key==='Enter') document.getElementById('customHabitAddBtn').click();
+
   });
+
 }
+
  
+
 function addCustomHabit(name){
+
   const id = 'custom_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+
   const habit = { id, name, emoji:'✨', cat:'custom', catName:'عادة خاصة' };
+
   if(!state.customHabits) state.customHabits = [];
+
   state.customHabits.push(habit);
+
   state.selectedHabits.push(id);
+
   saveState();
+
   return habit;
+
 }
+
 function removeCustomHabit(id){
+
   state.customHabits = (state.customHabits||[]).filter(h=>h.id!==id);
+
   state.selectedHabits = state.selectedHabits.filter(hid=>hid!==id);
+
   saveState();
+
 }
+
 function renderCustomHabitTags(){
+
   const wrap = document.getElementById('customHabitTags');
+
   if(!wrap) return;
+
   wrap.innerHTML = (state.customHabits||[]).map(h=>`
+
     <span class="custom-habit-tag">✨ ${h.name} <span class="rm" data-rm="${h.id}">✕</span></span>
+
   `).join('');
+
   wrap.querySelectorAll('.rm').forEach(btn=>{
+
     btn.addEventListener('click', (e)=>{
+
       e.stopPropagation();
+
       removeCustomHabit(btn.dataset.rm);
+
       renderCustomHabitTags();
+
       updateSelCount();
+
     });
+
   });
+
 }
+
 function updateSelCount(){
+
   const n = state.selectedHabits.length;
+
   document.getElementById('selCount').textContent = n+' عادة مختارة';
+
   document.getElementById('ob2-next').disabled = n < 1;
+
 }
+
  
+
 /* ============================================================
+
    RENDER: DASHBOARD
+
 ============================================================ */
+
 function renderPerformanceChart(){
+
   const wrap = document.getElementById('performanceChart');
+
   if(!wrap) return;
+
  
+
   if((state.selectedHabits || []).length === 0){
+
     wrap.innerHTML = '<div class="performance-card"><div class="empty-hint">اختر عاداتك أولًا عشان يظهر لك أداء الالتزام.</div></div>';
+
     return;
+
   }
+
  
+
   const days = weeklyPerformance(7);
+
   const avg = Math.round(days.reduce((sum, d)=>sum + d.percent, 0) / days.length);
+
   const best = days.reduce((max, d)=> d.percent > max.percent ? d : max, days[0]);
+
   const today = days[days.length - 1];
+
  
+
   wrap.innerHTML = `
+
     <div class="performance-card">
+
       <div class="performance-stats">
+
         <div class="performance-stat">
+
           <span>متوسط الأسبوع</span>
+
           <b>${avg}%</b>
+
         </div>
+
         <div class="performance-stat">
+
           <span>أفضل يوم</span>
+
           <b>${best.percent}%</b>
+
         </div>
+
         <div class="performance-stat">
+
           <span>إنجاز اليوم</span>
+
           <b>${today.done}/${today.total}</b>
+
         </div>
+
       </div>
+
       <div class="performance-bars" role="img" aria-label="رسم بياني لنسبة الالتزام بالعادات خلال آخر 7 أيام">
+
         ${days.map(day=>`
+
           <div class="performance-day ${day.isToday?'today':''} ${day.complete?'complete':''} ${day.done>0?'has-activity':''}">
+
             <div class="performance-percent">${day.percent}%</div>
+
             <div class="performance-track" title="${day.label}: ${day.done} من ${day.total}">
+
               <div class="performance-fill" style="--h:${day.percent}%"></div>
+
             </div>
+
             <div class="performance-label">${day.label}</div>
+
           </div>
+
         `).join('')}
+
       </div>
+
       <div class="performance-note">كل عمود يوضح نسبة العادات المنجزة في ذلك اليوم من إجمالي عاداتك المختارة.</div>
+
     </div>
+
   `;
+
 }
+
  
+
 function renderIstighfarScreen(){
+
   const display = document.getElementById('istighfarCountDisplay');
+
   const summary = document.getElementById('istighfarSummary');
+
   if(display) display.textContent = state.istighfarCount || 0;
+
   if(summary) summary.innerHTML = `العداد الحالي: <strong>${state.istighfarCount || 0}</strong> · الإجمالي: <strong>${state.istighfarTotal || 0}</strong>`;
+
 }
+
 function incrementIstighfar(){
+
   const nextCount = (state.istighfarCount || 0) + 1;
+
   if(nextCount >= 100){
+
     state.istighfarTotal = (state.istighfarTotal || 0) + 100;
+
     state.istighfarCount = 0;
+
     toast('🎉 أحسنت! وصلت 100 واستغفار');
+
   } else {
+
     state.istighfarCount = nextCount;
+
   }
+
   saveState();
+
   renderIstighfarScreen();
+
 }
+
 function resetIstighfar(){
+
   state.istighfarCount = 0;
+
   saveState();
+
   renderIstighfarScreen();
+
 }
+
 function setOnboardingMode(isEdit){
+
   const nextBtn = document.getElementById('ob2-next');
+
   if(nextBtn) nextBtn.textContent = isEdit ? 'حفظ التغييرات' : 'ابدأ رحلتي 🚀';
+
 }
+
 function openHabitsEditor(){
+
   document.getElementById('ob-step-1').style.display='none';
+
   document.getElementById('ob-step-2').style.display='block';
+
   document.getElementById('bottom-nav').style.display='none';
+
   setOnboardingMode(true);
+
   renderCategoryGrid();
+
   showScreen('onboarding');
+
 }
+
 function renderDashboard(){
+
   document.getElementById('dashName').textContent = state.name || 'صديقنا';
+
   const lvl = currentLevel();
+
   document.getElementById('levelLabel').textContent = lvl.name;
+
   const nxt = nextLevelXp();
+
   const prevMin = LEVELS.find(l=>l.name===lvl.name).min;
+
   const pct = Math.min(100, ((state.xp-prevMin)/(nxt-prevMin))*100);
+
   document.getElementById('xpBar').style.width = pct+'%';
+
   renderRosette();
+
   renderPerformanceChart();
+
  
+
   const list = document.getElementById('todayList');
+
   list.innerHTML = '';
+
   if(state.selectedHabits.length===0){
+
     list.innerHTML = '<div class="empty-hint">ما اخترت عادات بعد 🌱</div>';
+
   } else {
+
     const t = todayStr();
+
     const todayLog = state.logs[t] || [];
+
     state.selectedHabits.forEach(hid=>{
+
       const h = getHabitById(hid);
+
       if(!h) return;
+
       const done = todayLog.includes(hid);
+
       const card = document.createElement('div');
+
       card.className = 'today-card' + (done?' done':'');
+
       card.innerHTML = `
+
         <div class="circle">${done?'✓':''}</div>
+
         <div class="h-emoji">${h.emoji}</div>
+
         <div style="flex:1">
+
           <div class="h-name">${h.name}</div>
+
           <div class="h-cat">${h.catName}</div>
+
         </div>
+
       `;
+
       card.addEventListener('click', ()=> toggleHabitToday(hid));
+
       list.appendChild(card);
+
     });
+
   }
+
 }
+
  
+
 function toggleHabitToday(hid){
+
   const t = todayStr();
+
   if(!state.logs[t]) state.logs[t] = [];
+
   const idx = state.logs[t].indexOf(hid);
+
   const wasComplete = dayComplete(t);
+
   if(idx>=0){ state.logs[t].splice(idx,1); state.xp = Math.max(0, state.xp-10); }
+
   else { state.logs[t].push(hid); state.xp += 10; }
+
   const nowComplete = dayComplete(t);
+
   if(!wasComplete && nowComplete){
+
     toast('🎉 خلصت عادات اليوم! استمر كذا');
+
     confetti();
+
     checkChallengeProgress();
+
   }
+
   saveState();
+
   checkBadges();
+
   renderDashboard();
+
 }
+
  
+
 /* ============================================================
+
    RENDER: CHALLENGES
+
 ============================================================ */
+
 function daysSinceStart(){
+
   if(!state.challengeStart) return 0;
+
   const start = new Date(state.challengeStart);
+
   const now = new Date();
+
   return Math.floor((now-start)/86400000)+1;
+
 }
+
 function checkChallengeProgress(){
+
   if(!state.joinedChallenge) return;
+
   const ch = CHALLENGES.find(c=>c.id===state.joinedChallenge);
+
   if(!ch) return;
+
   const elapsed = daysSinceStart();
+
   if(elapsed >= ch.days){
+
     state.completedChallenges += 1;
+
     state.joinedChallenge = null;
+
     state.challengeStart = null;
+
     toast('🏆 مبروك! أكملت "'+ch.title+'" بنجاح');
+
     confetti();
+
     saveState();
+
   }
+
 }
+
 function renderChallenges(){
+
   const wrap = document.getElementById('challengeList');
+
   wrap.innerHTML = '';
+
   CHALLENGES.forEach(ch=>{
+
     const joined = state.joinedChallenge===ch.id;
+
     const elapsed = joined ? Math.min(ch.days, daysSinceStart()) : 0;
+
     const pct = joined ? (elapsed/ch.days*100) : 0;
+
     const card = document.createElement('div');
+
     card.className = 'challenge-card';
+
     card.innerHTML = `
+
       <div class="challenge-top">
+
         <div class="challenge-title">${ch.title}</div>
+
         <div class="challenge-days">${ch.days} يوم</div>
+
       </div>
+
       <div class="challenge-desc">${ch.desc}</div>
+
       ${joined? `<div class="challenge-progress-wrap"><div class="challenge-progress" style="width:${pct}%"></div></div>
+
       <div style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">يوم ${elapsed} من ${ch.days}</div>`:''}
+
       <button class="small-btn ${joined?'active':''}" data-cid="${ch.id}">
+
         ${joined? 'جارٍ التحدي 🔥' : (state.joinedChallenge? 'انضم (تحدي واحد بالمرة)' : 'ابدأ التحدي')}
+
       </button>
+
     `;
+
     const btn = card.querySelector('button');
+
     if(!state.joinedChallenge || joined){
+
       btn.addEventListener('click', ()=>{
+
         if(joined) return;
+
         state.joinedChallenge = ch.id;
+
         state.challengeStart = todayStr();
+
         saveState();
+
         toast('انضممت لتحدي "'+ch.title+'" 💪');
+
         renderChallenges();
+
       });
+
     } else {
+
       btn.disabled = true;
+
     }
+
     wrap.appendChild(card);
+
   });
+
 }
+
  
+
 /* ============================================================
+
    RENDER: ACHIEVEMENTS
+
 ============================================================ */
+
 function checkBadges(){
+
   const stats = { streak: computeStreak(), totalDaysActive: totalDaysActive(), completedChallenges: state.completedChallenges };
+
   BADGES.forEach(b=>{
+
     if(!state.badgesUnlocked.includes(b.id) && b.check(stats)){
+
       state.badgesUnlocked.push(b.id);
+
       toast('🏅 إنجاز جديد: '+b.name);
+
       confetti();
+
     }
+
   });
+
   saveState();
+
 }
+
 function renderBadges(){
+
   const grid = document.getElementById('badgeGrid');
+
   grid.innerHTML = '';
+
   BADGES.forEach(b=>{
+
     const unlocked = state.badgesUnlocked.includes(b.id);
+
     const card = document.createElement('div');
+
     card.className = 'badge-card' + (unlocked?' unlocked':'');
+
     card.innerHTML = `<div class="badge-emoji">${b.emoji}</div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div>`;
+
     grid.appendChild(card);
+
   });
+
 }
+
  
+
 /* ============================================================
+
    SHARE ACHIEVEMENT IMAGE
+
 ============================================================ */
+
 function roundedRect(ctx, x, y, width, height, radius){
+
   const r = Math.min(radius, width / 2, height / 2);
+
   ctx.beginPath();
+
   ctx.moveTo(x + r, y);
+
   ctx.arcTo(x + width, y, x + width, y + height, r);
+
   ctx.arcTo(x + width, y + height, x, y + height, r);
+
   ctx.arcTo(x, y + height, x, y, r);
+
   ctx.arcTo(x, y, x + width, y, r);
+
   ctx.closePath();
+
 }
+
  
+
 function createAchievementImage(){
+
   const canvas = document.createElement('canvas');
+
   const width = 1080;
+
   const height = 1350;
+
   canvas.width = width;
+
   canvas.height = height;
+
   const ctx = canvas.getContext('2d');
+
   const days = weeklyPerformance(7);
+
   const average = Math.round(days.reduce((sum, day)=>sum + day.percent, 0) / days.length);
+
   const today = days[days.length - 1];
+
   const streak = computeStreak();
+
   const name = String(state.name || 'صديقنا').slice(0, 28);
+
  
+
   ctx.fillStyle = '#12102A';
+
   ctx.fillRect(0, 0, width, height);
+
   ctx.fillStyle = '#241F52';
+
   ctx.beginPath();
+
   ctx.arc(960, 80, 290, 0, Math.PI * 2);
+
   ctx.fill();
+
   ctx.fillStyle = '#1D1B3A';
+
   roundedRect(ctx, 70, 70, 940, 1210, 48);
+
   ctx.fill();
+
   ctx.strokeStyle = '#3A376C';
+
   ctx.lineWidth = 3;
+
   roundedRect(ctx, 70, 70, 940, 1210, 48);
+
   ctx.stroke();
+
  
+
   ctx.direction = 'rtl';
+
   ctx.textAlign = 'right';
+
   ctx.fillStyle = '#E8B84B';
+
   ctx.font = '700 58px Arial, sans-serif';
+
   ctx.fillText('خطوة', 920, 165);
+
   ctx.fillStyle = '#A9A6C9';
+
   ctx.font = '400 30px Arial, sans-serif';
+
   ctx.fillText('إنجاز اليوم', 920, 215);
+
  
+
   ctx.fillStyle = '#0B0A1E';
+
   roundedRect(ctx, 120, 275, 840, 365, 34);
+
   ctx.fill();
+
   ctx.fillStyle = '#F5F3FF';
+
   ctx.font = '700 42px Arial, sans-serif';
+
   ctx.fillText('أحسنت يا ' + name, 900, 360);
+
   ctx.fillStyle = '#A9A6C9';
+
   ctx.font = '400 28px Arial, sans-serif';
+
   ctx.fillText('أكملت اليوم', 900, 415);
+
   ctx.textAlign = 'center';
+
   ctx.fillStyle = '#2EC4B6';
+
   ctx.font = '700 168px Arial, sans-serif';
+
   ctx.fillText(today.percent + '%', 540, 545);
+
   ctx.fillStyle = '#F5F3FF';
+
   ctx.font = '600 34px Arial, sans-serif';
+
   ctx.fillText(today.done + ' من ' + today.total + ' عادة', 540, 600);
+
  
+
   ctx.direction = 'rtl';
+
   ctx.textAlign = 'right';
+
   ctx.fillStyle = '#F5F3FF';
+
   ctx.font = '700 34px Arial, sans-serif';
+
   ctx.fillText('أداء آخر 7 أيام', 900, 725);
+
   const chartX = 170;
+
   const chartY = 1015;
+
   const chartHeight = 210;
+
   const barWidth = 70;
+
   const gap = 45;
+
   days.forEach((day, index)=>{
+
     const x = chartX + index * (barWidth + gap);
+
     ctx.fillStyle = '#0B0A1E';
+
     roundedRect(ctx, x, chartY - chartHeight, barWidth, chartHeight, 28);
+
     ctx.fill();
+
     const fillHeight = Math.max(day.done > 0 ? 12 : 0, chartHeight * day.percent / 100);
+
     if(fillHeight > 0){
+
       ctx.fillStyle = day.complete ? '#E8B84B' : '#2EC4B6';
+
       roundedRect(ctx, x, chartY - fillHeight, barWidth, fillHeight, 28);
+
       ctx.fill();
+
     }
+
     ctx.direction = 'ltr';
+
     ctx.textAlign = 'center';
+
     ctx.fillStyle = day.isToday ? '#E8B84B' : '#A9A6C9';
+
     ctx.font = '600 23px Arial, sans-serif';
+
     ctx.fillText(day.percent + '%', x + barWidth / 2, chartY + 42);
+
   });
+
  
+
   ctx.direction = 'rtl';
+
   ctx.textAlign = 'right';
+
   ctx.fillStyle = '#2A2854';
+
   roundedRect(ctx, 120, 1110, 840, 110, 26);
+
   ctx.fill();
+
   ctx.fillStyle = '#F5F3FF';
+
   ctx.font = '700 30px Arial, sans-serif';
+
   ctx.fillText('سلسلتك الحالية: ' + streak + ' يوم', 900, 1178);
+
   ctx.fillStyle = '#A9A6C9';
+
   ctx.font = '400 25px Arial, sans-serif';
+
   ctx.fillText('متوسط الالتزام هذا الأسبوع: ' + average + '%', 900, 1260);
+
  
+
   return canvas;
+
 }
+
  
+
 async function shareAchievementAsImage(){
+
   const canvas = createAchievementImage();
+
   const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
   if(!blob){
+
     toast('ما قدرنا ننشئ صورة الإنجاز، جرّب مرة ثانية.');
+
     return;
+
   }
+
  
+
   const file = new File([blob], 'khatwa-achievement.png', {type:'image/png'});
+
   const shareData = {
+
     title: 'إنجازي في خطوة',
+
     text: 'أتابع عاداتي اليومية مع خطوة.',
+
     files: [file]
+
   };
+
  
+
   if(navigator.canShare && navigator.canShare(shareData)){
+
     try{
+
       await navigator.share(shareData);
+
     } catch(error){
+
       if(error && error.name !== 'AbortError') toast('تعذرت المشاركة الآن، جرّب مرة ثانية.');
+
     }
+
     return;
+
   }
+
  
+
   const url = URL.createObjectURL(blob);
+
   const link = document.createElement('a');
+
   link.href = url;
+
   link.download = 'khatwa-achievement.png';
+
   link.click();
+
   URL.revokeObjectURL(url);
+
   toast('تم حفظ صورة إنجازك في التنزيلات.');
+
 }
+
  
+
 /* ============================================================
+
    NAVIGATION
+
 ============================================================ */
+
 function showScreen(name){
+
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+
   document.getElementById('screen-'+name).classList.add('active');
+
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.screen===name));
+
   if(name==='dashboard') renderDashboard();
-  if(name==='istighfar'){ renderIstighfarScreen(); renderDuaList(); }
+
+  if(name==='istighfar') renderIstighfarScreen();
+
   if(name==='challenges') renderChallenges();
+
   if(name==='achievements') renderBadges();
+
   if(name==='more') renderFAQList();
+
 }
+
 document.querySelectorAll('.nav-btn[data-screen]').forEach(btn=>{
+
   btn.addEventListener('click', ()=> showScreen(btn.dataset.screen));
+
 });
+
 document.querySelectorAll('[data-home]').forEach(btn=>{
+
   btn.addEventListener('click', ()=> showScreen('dashboard'));
+
 });
+
 document.getElementById('shareAchievementBtn').addEventListener('click', shareAchievementAsImage);
+
  document.getElementById('editHabitsBtn').addEventListener('click', openHabitsEditor);
+
  document.getElementById('istighfarAddBtn').addEventListener('click', ()=>{
+
   incrementIstighfar();
+
 });
+
  document.getElementById('istighfarResetBtn').addEventListener('click', ()=>{
+
   resetIstighfar();
+
   toast('🔄 تم إعادة تعيين العداد');
+
 });
+
  
+
 // ---- إعداد بطاقة "أضف عادة جديدة" بالداشبورد (مرة وحدة بس، مو مع كل تحديث) ----
+
 document.getElementById('dashAddCard').addEventListener('click', (e)=>{
+
   if(e.target.closest('.add-habit-dash-form')) return;
+
   document.getElementById('dashAddForm').classList.toggle('show');
+
 });
+
 document.getElementById('dashHabitAddBtn').addEventListener('click', (e)=>{
+
   e.stopPropagation();
+
   const input = document.getElementById('dashHabitInput');
+
   const name = input.value.trim();
+
   if(!name) return;
+
   addCustomHabit(name);
+
   input.value='';
+
   toast('✨ ضفنا عادة "'+name+'" لقائمتك');
+
   renderDashboard();
+
 });
+
 document.getElementById('dashHabitInput').addEventListener('keydown', e=>{
+
   if(e.key==='Enter') document.getElementById('dashHabitAddBtn').click();
+
 });
+
 document.getElementById('dashHabitInput').addEventListener('click', e=> e.stopPropagation());
+
  
+
 /* ============================================================
+
    ONBOARDING FLOW
+
 ============================================================ */
+
 document.getElementById('ob1-next').addEventListener('click', ()=>{
+
   const name = document.getElementById('nameInput').value.trim();
+
   if(!name){ document.getElementById('nameInput').focus(); return; }
+
   state.name = name; saveState();
+
   document.getElementById('ob-step-1').style.display='none';
+
   document.getElementById('ob-step-2').style.display='block';
+
   setOnboardingMode(false);
+
   renderCategoryGrid();
+
 });
+
 document.getElementById('ob2-next').addEventListener('click', ()=>{
+
   saveState();
+
   document.getElementById('bottom-nav').style.display='flex';
+
   document.getElementById('screen-onboarding').classList.remove('active');
+
   setOnboardingMode(false);
+
   showScreen('dashboard');
+
 });
+
  
+
 document.getElementById('resetLink').addEventListener('click', ()=>{
+
   if(confirm('متأكد تبي تمسح كل بياناتك وتبدأ من الصفر؟')){
+
     localStorage.removeItem(STORAGE_KEY);
+
     location.reload();
+
   }
+
 });
+
  
+
 /* ============================================================
+
    MORE SCREEN FAQ
+
 ============================================================ */
+
 const FAQS = [
   { q:'كيف أضيف أو أغيّر عاداتي اليومية؟', a:'اضغط أيقونة ✏️ بأعلى الشاشة الرئيسية، عدّل اختيارك، وثم اضغط "حفظ التغييرات".' },
   { q:'وين تُحفظ بياناتي؟ هل هي آمنة؟', a:'كل بياناتك تُحفظ محليًا على جهازك فقط (داخل المتصفح)، وما تُرسل لأي سيرفر أو جهة خارجية. لو مسحت بيانات المتصفح أو غيّرت جهازك، البيانات تروح، فخذ بالك.' },
   { q:'هل يشتغل التطبيق بدون إنترنت؟', a:'نعم، بعد أول فتح للتطبيق يقدر يشتغل بدون نت في أغلب الأحيان.' },
-  { q:'إذا أردت اقتراح إضافة أو تعديل جديد على التطبيق؟', a:'تواصل معنا عبر حساباتنا الموضحة بالأعلى وشاركنا فكرتك، وسيتم النظر فيها وتطبيقها بإذن الله.' },
+  { q:'إذا أردت إضافة وتعديلات جديدة؟', a:'تواصل معنا عبر حساباتنا وشاركنا أفكارك، وسيتم تطبيقها.' },
   { q:'كيف أتواصل للدعم الفني أو الاستفسارات؟', a:'تواصل معنا مباشرة عبر الإنستقرام أو البريد الإلكتروني الموضحين بالأعلى، ويسعدنا نساعدك.' },
 ];
+
 function renderFAQList(){
   const wrap = document.getElementById('faqList');
   if(!wrap) return;
@@ -1426,49 +2713,59 @@ function renderFAQList(){
     wrap.appendChild(el);
   });
 }
-const DUAS = [
-  { title:'صيغة الاستغفار المعتادة', text:'أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه' },
-  { title:'سيد الاستغفار', text:'اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، أبوء لك بنعمتك علي، وأبوء بذنبي، فاغفر لي فإنه لا يغفر الذنوب إلا أنت' },
-  { title:'دعاء طلب المغفرة والتوبة', text:'رب اغفر لي وتب علي إنك أنت التواب الرحيم' },
-  { title:'الاستغفار الشامل', text:'اللهم اغفر لي ذنبي كله، دقه وجله، وأوله وآخره، وعلانيته وسره' },
-  { title:'دعاء ربنا آتنا', text:'ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار' },
-];
-function renderDuaList(){
-  const wrap = document.getElementById('duaList');
-  if(!wrap) return;
-  wrap.innerHTML = DUAS.map(d=>`
-    <div class="dua-card">
-      <div class="dua-title">${d.title}</div>
-      <div class="dua-text">${d.text}</div>
-    </div>
-  `).join('');
-}
+
 /* ============================================================
+
    BOOT
+
 ============================================================ */
+
 function boot(){
+
   // لو المطوّر (فيصل) حط اسم جاهز في CONFIG قبل ما يرسل الملف للزبون
+
   if(CONFIG.presetName && !state.name){
+
     state.name = CONFIG.presetName;
+
     saveState();
+
   }
+
   if(state.name && state.selectedHabits.length>0){
+
     document.getElementById('screen-onboarding').classList.remove('active');
+
     document.getElementById('bottom-nav').style.display='flex';
+
     showScreen('dashboard');
+
   } else if(state.name){
+
     // الاسم جاهز، بس لسه ما اختار عادات — نروح مباشرة لخطوة اختيار العادات
+
     document.getElementById('nameInput').value = state.name;
+
     document.getElementById('ob-step-1').style.display='none';
+
     document.getElementById('ob-step-2').style.display='block';
+
     document.getElementById('bottom-nav').style.display='none';
+
     renderCategoryGrid();
+
   } else {
+
     document.getElementById('bottom-nav').style.display='none';
+
   }
+
 }
 renderFAQList();
 boot();
+
 </script>
+
 </body>
+
 </html>
